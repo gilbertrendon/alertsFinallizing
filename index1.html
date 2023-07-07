@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<div ng-controller="ServiceAlertFormController">
+  <div ng-controller="ServiceAlertFormController" ng-init="init();">
+    <label style="font-weight: bold">NOVEDAD EN EL SERVICIO</label>
+  </div>
+  <div id="divLocationsCombo" ng-show="showLocationsCombo">
+    <label style="font-weight: bold">CALL ID - {{CallIDg}}</label>
+  </div>
+  <div>
+    <table class="table">
+      <thead role="rowgroup" style="background-color: #bec3c7">
+        <tr>
+          <th>Estado</th>
+          <th>Fecha de creaci&oacute;n</th>
+          <th>Fecha de gesti&oacute;n</th>
+          <th>Fecha de cierre</th>
+          <th>Fecha de cierre manual</th>
+          <th>Tiempo no gestionada</th>
+          <th>Tiempo gestionada</th>
+          <th>Tiempo de gesti&oacute;n manual</th>
+          <th>Tipo de alerta</th>
+          <th>Gestionada por:</th>
+          <th>Acci&oacute;n</th>
+          <th>Comentarios</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          style="color: #0875bf hsl(204, 92%, 39%) rgb(8, 117, 191)"
+          ng-repeat="alert in ServiceAlertKeys"
+        >
+          <td>{{alert.ServiceAlertStatus['@DisplayString']}}</td>
+          <td>{{alert.CreationTime}}</td>
+          <td>{{LastServiceAlert.managementDate}}</td>
+          <td>{{alert.closeAlert}}</td>
+          <td>{{alert.manualCloseAlert}}</td>
+          <td>{{alert.notManageTime}}</td>
+          <td>{{alert.manageTime}}</td>
+          <td>{{alert.manualManageTime}}</td>
+          <td>{{alert.Title}}</td>
+          <td>{{alert.FollowUpUser}}</td>
+          <td>{{alert.FollowUpAction["@DisplayString"]}}</td>
+          <td>{{alert.FollowUpComments}}</td>
+        </tr>
+        <tr style="color: #0875bf hsl(204, 92%, 39%) rgb(8, 117, 191)">
+          <td>
+            {{LastServiceAlert.ServiceAlertStatus['@DisplayString']}}
+            <select
+              ng-change="updating(LastServiceAlert.FollowUpUser,
+              LastServiceAlert.FollowUpComments,
+              LastServiceAlert.ServiceAlertStatus['@DisplayString'],
+              LastServiceAlert.FollowUpAction['@DisplayString'].Name,
+              LastServiceAlert.FollowUpAction['@DisplayString'].Key
+              )"
+              ng-model="LastServiceAlert.ServiceAlertStatus['@DisplayString']"
+              ng-options="opcion.Name for opcion in Opciones"
+            ></select>
+          </td>
+          <td ng-model="LastServiceAlert.Stamp.TimeCreated">
+            {{LastServiceAlert.CreationTime}}
+          </td>
+          <td ng-model="LastServiceAlert.managementDate">
+            {{LastServiceAlert.managementDate}}
+          </td>
+          <td ng-model="LastServiceAlert.closeAlert">
+            {{LastServiceAlert.closeAlert}}
+          </td>
+          <td ng-model="LastServiceAlert.manualCloseAlert">
+            {{LastServiceAlert.manualCloseAlert}}
+          </td>
+          <td ng-model="LastServiceAlert.notManageTime">
+            {{LastServiceAlert.notManageTime}}
+          </td>
+          <td ng-model="LastServiceAlert.manageTime">
+            {{LastServiceAlert.manageTime}}
+          </td>
+          <td ng-model="LastServiceAlert.manualManageTime">
+            {{LastServiceAlert.manualManageTime}}
+          </td>
+          <td ng-model="LastServiceAlert.Title">{{LastServiceAlert.Title}}</td>
+          <td ng-model="LastServiceAlert.FollowUpUser">
+            {{LastServiceAlert.FollowUpUser}}
+          </td>
+          <td>
+            &Uacute;ltima acci&oacute;n ejecutada:
+            <br />
+            {{actualAction}}
+            <select
+              ng-change="updateOnlyAction(LastServiceAlert.FollowUpAction['@DisplayString'])"
+              ng-model="LastServiceAlert.FollowUpAction['@DisplayString']"
+              ng-options="accion.Name for accion in Acciones"
+            ></select>
+          </td>
+          <td hidden>
+            <br />
+            <select
+              ng-model="LastServiceAlert.Description"
+              style="
+                border: 1px solid #cbcbcb;
+                border-radius: 2px;
+                min-height: 38px;
+                font-size: 14px;
+                margin-top: 5px;
+                background-color: #ffffff;
+                color: #222222;
+                width: 160px;
+                padding: 4px 10px;
+              "
+              class="form-control"
+            >
+              <option>Novedad Gestionada</option>
+              <option>Novedad no requiere gestion</option>
+            </select>
+            <br />
+          </td>
+          <td>
+            <textarea
+              rows="4"
+              cols="30"
+              name="comment"
+              ng-model="LastServiceAlert.FollowUpComments"
+            >
+            {{LastServiceAlert.FollowUpComments}}</textarea
+            >
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

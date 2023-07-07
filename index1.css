@@ -1,0 +1,86 @@
+/*.angular-google-map-container {
+  height: 550px;
+  top:30px;
+  right:30px;
+}*/
+
+.tituloPrueba {
+  font-size: 2rem;
+}
+
+#notificacionesDos span{
+    font-size: 1.5rem;
+    color: red;
+}
+
+table {
+  border-collapse: separate;
+}
+.angular-google-map-container {
+  height: 550px;
+  top:30px;
+  right:30px;
+}
+table,
+th,
+td {
+  border: 1px solid gray;
+  
+}
+
+th,
+td {
+  padding: 1px;
+}
+.columnheadergrid{
+  padding-left: 10px; 
+  border-top: 1px #cbcbcb;
+  border-left: 1px #cbcbcb;
+  border-right: 1px #cbcbcb;
+}
+.gridCellLeft{
+  border-left: 1px #cbcbcb;
+}
+.gridCellRight{
+  border-right: 1px #cbcbcb;
+}
+.emptyColumn{
+  padding-left: 10px; 
+  border-top: 1px #cbcbcb; 
+  border-left: 1px solid #cbcbcb;
+}
+.columnNombre{
+  border-right: 1px #1174be; 
+  border-left: 1px solid #1174be; 
+  border-top: 1px #cbcbcb;
+}
+.tableGrid
+{
+  height: 207px;
+  border-bottom: 1px solid #cbcbcb ;
+  border-right: 1px solid #cbcbcb ;
+  border-left: 1px solid #cbcbcb;
+}
+.headerGrid{
+  outline-style: auto;
+  outline-color: #cbcbcb;
+}
+.tablegridg{
+  border-collapse: separate;
+  height: 207px;
+  border-bottom: 1px solid #cbcbcb ;
+  border-right: 1px solid #cbcbcb ;
+  border-left: 1px solid #cbcbcb;
+}
+
+  .tablegridg{
+  border-collapse: separate;
+  height: 207px;
+  border-bottom: 1px solid #cbcbcb ;
+  border-right: 1px solid #cbcbcb ;
+  border-left: 1px solid #cbcbcb;
+}
+
+.bodytable{
+  background-color: solid gray;
+}
