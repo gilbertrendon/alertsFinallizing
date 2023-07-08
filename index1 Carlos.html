@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<div ng-controller="ServiceAlertController" style="width:2640px">
+    <div id="NoAlert" ng-class="{'direction_rtl' : direction == 'RTL'}" class="ng-binding" style="visibility:$scope.NoAlerts">Felicitaciones!! no tienes alarmas en este servicio</div>
+	<div id="AlertHeader" class="k-grid-header" style="padding-right: 0px; margin-top: 20px;visibility:$scope.Alerts">
+		<div class="k-grid-header-wrap k-auto-scrollable headerGrid">
+			<table role="grid">
+				<colgroup>
+					<col style="width:100px">
+				    <col style="width:180px">
+				    <col style="width:300px">
+				    <col style="width:150px">
+				    <col style="width:150px">
+				    <col style="width:180px">
+				    <col style="width:180px">
+				    <col style="width:200px">
+				    <col style="width:300px">
+				    <col style="width:300px">
+				    <col style="width:500px">
+				</colgroup>
+				<thead role="rowgroup">
+					<tr role="row" class="gridHeaderMultipleSelection">
+						<th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;"><span>Key</span></th>
+						<th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;"><span>Estado</span></th>
+						<th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;"><span>Tipo de Tarea</span></th>
+						<th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;"><span>Fecha de Creaci&oacute;n</span></th>
+						<th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;"><span>Fecha de Cierre</span></th>
+						<th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;"><span>Tiempo sin Gesti&oacute;n (min)</span></th>
+						<th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;"><span>Tiempo de Gesti&oacute;n (min)</span></th>
+						<th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;"><span>Descripci&oacute;n</span></th>
+						<th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;"><span>Usuario Asignado</span></th>
+						<th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;"><span>Tipo de gesti&oacute;n</span></th>
+						<th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;"><span>Comentarios</span></th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+	
+	<div id="AlertData" class="k-grid-content k-auto-scrollable tableGrid">
+		<table role="grid">
+			<colgroup>
+				<col style="width:100px">
+				    <col style="width:180px">
+				    <col style="width:300px">
+				    <col style="width:150px">
+				    <col style="width:150px">
+				    <col style="width:180px">
+				    <col style="width:180px">
+				    <col style="width:200px">
+				    <col style="width:300px">
+				    <col style="width:300px">
+				    <col style="width:500px">
+			</colgroup>
+			<tbody role="rowgroup">
+				<tr role="row" ng-repeat='serviceAlert in serviceAlerts track by $index'>
+					<td role="gridcell" class="gridCellLeft" style="padding: 8px">{{serviceAlerts[$index].Key}}
+					<br>
+					<p>Changed: {{serviceAlerts[$index].changeDetected}}</p>
+					</td>
+					
+					<td role="gridcell" class="gridCellLeft" style="padding: 8px">
+					    <select name="statusSelect" ng-options="status.Name for status in serviceAlerts[$index].StatusOptions" ng-model="serviceAlerts[$index].CurrentStatus"  class="k-dropdown-wrap k-state-default" style="max-width:90%;height: 40px;margin-top: 5px;border:1px solid #cccccc;padding: 8px" ng-change="markUpdatedItem($index)"></select>
+					</td>
+					<td role="gridcell" style="padding: 8px">{{serviceAlerts[$index].AlertTaskType}}</td>
+					<td role="gridcell" style="padding: 8px">{{serviceAlerts[$index].CreationTime | date:"dd/MM/yyyy HH:mm"}}</td>
+					<td role="gridcell" style="padding: 8px">{{serviceAlerts[$index].closeAlert | date:"dd/MM/yyyy HH:mm"}}</td>
+					<td role="gridcell" style="padding: 8px">{{serviceAlerts[$index].notManageTime}}</td>
+					<td role="gridcell" style="padding: 8px">{{serviceAlerts[$index].manageTime}}</td>
+					<td role="gridcell" style="padding: 8px">{{serviceAlerts[$index].Title}}</td>
+					<td role="gridcell" style="padding: 8px">{{serviceAlerts[$index].FollowUpUser}}</td>
+					<td role="gridcell" style="padding: 8px">
+					    <select name="followUpActionSelect" ng-options="followUpAction.Name for followUpAction in serviceAlerts[$index].FollowUpActionOptions" ng-model="serviceAlerts[$index].CurrentFollowUpAction" class="k-dropdown-wrap k-state-default" style="max-width:90%;height: 40px;margin-top: 5px;border:1px solid #cccccc;padding: 8px" ng-change="markUpdatedItem($index)">
+			                <option value="">--Selecciona Acci&oacute;n--</option>
+		                </select>
+					</td>
+					<td role="gridcell" style="padding: 8px">
+					    <input ng-model='serviceAlerts[$index].FollowUpComments' ng-change="markUpdatedItem($index)" style="height: 40px;margin-top: 5px;border:1px solid #cccccc;padding: 8px;width:100%"/>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

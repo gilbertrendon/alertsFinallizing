@@ -45,14 +45,8 @@
         <tr style="color: #0875bf hsl(204, 92%, 39%) rgb(8, 117, 191)">
           <td>
             {{LastServiceAlert.ServiceAlertStatus['@DisplayString']}}
-            <select
-              ng-change="updating(LastServiceAlert.FollowUpUser,
-              LastServiceAlert.FollowUpComments,
-              LastServiceAlert.ServiceAlertStatus['@DisplayString'],
-              LastServiceAlert.FollowUpAction['@DisplayString'].Name,
-              LastServiceAlert.FollowUpAction['@DisplayString'].Key
-              )"
-              ng-model="LastServiceAlert.ServiceAlertStatus['@DisplayString']"
+            <select ng-model="LastServiceAlert.ServiceAlertStatus['@DisplayString']"
+            ng-change="updateVisibleState(LastServiceAlert.ServiceAlertStatus['@DisplayString'])"
               ng-options="opcion.Name for opcion in Opciones"
             ></select>
           </td>
@@ -84,34 +78,13 @@
           <td>
             &Uacute;ltima acci&oacute;n ejecutada:
             <br />
-            {{actualAction}}
+            {{LastServiceAlert.FollowUpAction['@DisplayString']}}
             <select
-              ng-change="updateOnlyAction(LastServiceAlert.FollowUpAction['@DisplayString'])"
+              
+              ng-change="updateVisibleAction(LastServiceAlert.FollowUpAction['@DisplayString'])"
               ng-model="LastServiceAlert.FollowUpAction['@DisplayString']"
               ng-options="accion.Name for accion in Acciones"
             ></select>
-          </td>
-          <td hidden>
-            <br />
-            <select
-              ng-model="LastServiceAlert.Description"
-              style="
-                border: 1px solid #cbcbcb;
-                border-radius: 2px;
-                min-height: 38px;
-                font-size: 14px;
-                margin-top: 5px;
-                background-color: #ffffff;
-                color: #222222;
-                width: 160px;
-                padding: 4px 10px;
-              "
-              class="form-control"
-            >
-              <option>Novedad Gestionada</option>
-              <option>Novedad no requiere gestion</option>
-            </select>
-            <br />
           </td>
           <td>
             <textarea

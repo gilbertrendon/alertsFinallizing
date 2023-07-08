@@ -14,7 +14,11 @@
 }
 
 table {
-  border-collapse: separate;
+  /* border-collapse: separate; */
+  border-top-left-radius: 5%;
+  border-top-right-radius:5%;
+  border-bottom-right-radius:5%;
+  border-bottom-left-radius: 5%;
 }
 .angular-google-map-container {
   height: 550px;
@@ -81,6 +85,6 @@ td {
   border-left: 1px solid #cbcbcb;
 }
 
-.bodytable{
+.headtable{
   background-color: solid gray;
 }
