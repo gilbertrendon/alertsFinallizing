@@ -20,7 +20,7 @@
           <th>Tiempo de gesti&oacute;n manual</th>
           <th>Tipo de alerta</th>
           <th>Gestionada por:</th>
-          <th>Acci&oacute;n</th>
+          <th>Accion(es)</th>
           <th>Comentarios</th>
         </tr>
       </thead>
@@ -39,7 +39,12 @@
           <td>{{alert.manualManageTime}}</td>
           <td>{{alert.Title}}</td>
           <td>{{alert.FollowUpUser}}</td>
-          <td>{{alert.Acciones}}</td>
+          <td>
+            Devolver: {{alert.Acciones[LastServiceAlert.Acciones.length].DevolverAlertaaFront}} LlamarCliente:
+            {{alert.Acciones[LastServiceAlert.Acciones.length].LlamarCliente}} LlamarProveedor:
+            {{alert.Acciones[LastServiceAlert.Acciones.length].LlamarProveedor}} Reporte:
+            {{alert.Acciones[LastServiceAlert.Acciones.length].Serealizaelreporte}}
+          </td>
           <td>{{alert.FollowUpComments}}</td>
         </tr>
         <tr style="color: #0875bf hsl(204, 92%, 39%) rgb(8, 117, 191)">
@@ -77,7 +82,7 @@
             {{LastServiceAlert.FollowUpUser}}
           </td>
           <td>
-            Acciones ejecutadas:
+            Presione control para seleccionar varias acciones:
             <br />
             <select multiple ng-model="selectedValues">
               <option value="1">Devolver alerta a front</option>
@@ -87,7 +92,6 @@
                 Se realiza el reporte de las novedades del servicio
               </option>
             </select>
-            <div>selectedValues = {{selectedValues}}</div>
           </td>
           <td>
             <textarea

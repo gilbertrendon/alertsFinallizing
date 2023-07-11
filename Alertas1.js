@@ -214,6 +214,8 @@ define(["modules/platform/platformModule"], function () {
               LastServiceAlert.ServiceAlertStatus["@DisplayString"] =
                 "Manual Close";
               $scope.Opciones = [];
+            } else {
+              $scope.Opciones = [];
             }
           },
           function (error) {
@@ -231,16 +233,6 @@ define(["modules/platform/platformModule"], function () {
 
       $scope.formInfo.beforeApplyClick = function () {
         if (!applied) {
-          // if (
-          //   $scope.LastServiceAlert.ServiceAlertStatus["@DisplayString"] ==
-          //   "Accepted"
-          // ) {
-          //   $scope.LastServiceAlert.ServiceAlertStatus.Key = 857653252;
-          // } else {
-          //   $scope.LastServiceAlert.ServiceAlertStatus["@DisplayString"] =
-          //     "Manual Close";
-          //   $scope.LastServiceAlert.ServiceAlertStatus.Key = 649388032;
-          // }
           $scope.Satus =
             $scope.LastServiceAlert.ServiceAlertStatus["@DisplayString"];
           $scope.Coment = $scope.LastServiceAlert.FollowUpComments;
@@ -325,10 +317,8 @@ define(["modules/platform/platformModule"], function () {
                   managementDate: managementD,
                   notManageTime: Math.trunc(diff / (60 * 1000)),
                   ServiceAlertStatus: {
-                    Name: $scope.LastServiceAlert.ServiceAlertStatus[
-                      "@DisplayString"
-                    ],
-                    Key: $scope.LastServiceAlert.ServiceAlertStatus.Key,
+                    Name: "Accepted",
+                    Key: 857653252,
                   },
                   FollowUpUser: $scope.LastServiceAlert.FollowUpUser,
                   FollowUpComments: $scope.LastServiceAlert.FollowUpComments,
@@ -356,6 +346,10 @@ define(["modules/platform/platformModule"], function () {
                 Key: nextServiceAlertKey,
                 FollowUpUser: $scope.LastServiceAlert.FollowUpUser,
                 FollowUpComments: $scope.LastServiceAlert.FollowUpComments,
+                ServiceAlertStatus: {
+                  Name: "Accepted",
+                  Key: 857653252,
+                },
                 Acciones: [
                   {
                     DevolverAlertaaFront: boolActOne,
@@ -367,8 +361,10 @@ define(["modules/platform/platformModule"], function () {
               };
               $scope.updateAndRefreshAlert($scope.ServiceAlertForUpdateQuery);
             } else if (
+              LastServiceAlert.ServiceAlertStatus["@DisplayString"] ==
+                "Accepted" &&
               $scope.LastServiceAlert.ServiceAlertStatus["@DisplayString"] ==
-              "Manual Close"
+                "Manual Close"
             ) {
               if (
                 (boolActOne || boolActTwo || boolActThree || boolActFour) &&
@@ -381,10 +377,8 @@ define(["modules/platform/platformModule"], function () {
                   manualCloseAlert: managementD,
                   manualManageTime: Math.trunc(diff2 / (60 * 1000)) - 300, //Estos son los minutos de gestión de la alerta
                   ServiceAlertStatus: {
-                    Name: $scope.LastServiceAlert.ServiceAlertStatus[
-                      "@DisplayString"
-                    ],
-                    Key: $scope.LastServiceAlert.ServiceAlertStatus.Key,
+                    Name: "Manual Close",
+                    Key: 649388032,
                   },
                   FollowUpUser: $scope.LastServiceAlert.FollowUpUser,
                   FollowUpComments: $scope.LastServiceAlert.FollowUpComments,
@@ -403,6 +397,29 @@ define(["modules/platform/platformModule"], function () {
                   "Se debe ingresar una acción ejecutada y un comentario para la transición a estado cerrada manualmente"
                 );
               }
+            } else if (
+              LastServiceAlert.ServiceAlertStatus["@DisplayString"] ==
+                "Manual Close" &&
+              $scope.LastServiceAlert.ServiceAlertStatus["@DisplayString"] ==
+                "Manual Close"
+            ) {
+              let nextServiceAlertKey = LastServiceAlert["Key"];
+              $scope.ServiceAlertForUpdateQuery = {
+                "@objectType": "ServiceAlert",
+                Key: nextServiceAlertKey,
+                FollowUpUser: $scope.LastServiceAlert.FollowUpUser,
+                FollowUpComments: $scope.LastServiceAlert.FollowUpComments,
+                Acciones: [
+                  {
+                    DevolverAlertaaFront: boolActOne,
+                    LlamarCliente: boolActTwo,
+                    LlamarProveedor: boolActThree,
+                    Serealizaelreporte: boolActFour,
+                  },
+                ],
+              };
+              $scope.updateAndRefreshAlert($scope.ServiceAlertForUpdateQuery);
+              console.log("Solo se modifican comentarios y acciones");
             }
           }
           applied = true;
