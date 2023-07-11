@@ -18,10 +18,6 @@ define(["modules/platform/platformModule"], function () {
         $scope.Satus = "";
         $scope.Opciones = [
           {
-            Key: 857653251,
-            Name: "Pending",
-          },
-          {
             Key: 857653252,
             Name: "Accepted",
           },
@@ -64,6 +60,7 @@ define(["modules/platform/platformModule"], function () {
       }
 
       $scope.selectedValues = [];
+      $scope.selected = [];
 
       $scope.$watch("selected", function (nowSelected) {
         $scope.selectedValues = [];
@@ -78,33 +75,14 @@ define(["modules/platform/platformModule"], function () {
           $scope.selectedValues.push(val.id.toString());
         });
       });
-      // $scope.startAlerts = async function () {
-
-      // };
 
       $scope.updateVisibleState = function (visibleState) {
-        // const select = document.getElementById('myselect')
-        // const selectValues = [1, 2];
-        /* Iterate options of select element */
-        // for (const option of document.querySelectorAll("#myselect option")) {
-        // const value = Number.parseInt(option.label);
-        // if (selectValues.indexOf(value) !== -1) {
-        // option.setAttribute("selected", "selected");
-        // } else {
-        //   option.removeAttribute("selected");
-        //   console.log(option.innerHTML);
-        // }
-        // }
-        // if (visibleState.Key == 649388032) {
-        //   $scope.Opciones = [];
+        $scope.LastServiceAlert.ServiceAlertStatus["@DisplayString"] =
+          visibleState.Name;
+        if (visibleState.Key == 649388032) {
+          $scope.Opciones = [];
+        }
       };
-
-      $scope.updateVisibleAction = function (visibleAction) {
-        // ng-change="updateVisibleAction(LastServiceAlert.FollowUpAction['@DisplayString'])"
-        // $scope.LastServiceAlert.FollowUpAction["@DisplayString"] =
-        //   visibleAction.Name;
-      };
-
       $scope.refresh = async function () {
         //Inicio refresh
         let TaskCallID = $scope.formInfo.object.CallID;
@@ -129,30 +107,52 @@ define(["modules/platform/platformModule"], function () {
 
               LastServiceAlert = $scope.LastServiceAlert;
             }
-            LastServiceAlert.Acciones[
-              LastServiceAlert.Acciones.length - 1
-            ].DevolverAlertaaFront = true;
-            LastServiceAlert.Acciones[
-              LastServiceAlert.Acciones.length - 1
-            ].LlamarCliente = true;
-
+            $scope.selected = [];
             if (
               LastServiceAlert.Acciones[LastServiceAlert.Acciones.length - 1]
                 .DevolverAlertaaFront
             ) {
-              $scope.selected = [
-                { id: 1, name: "Devolver alerta a front" },
-              ];
+              $scope.selected = [{ id: 1, name: "Devolver alerta a front" }];
             }
             if (
               LastServiceAlert.Acciones[LastServiceAlert.Acciones.length - 1]
-                .DevolverAlertaaFront
+                .LlamarCliente
             ) {
-              $scope.selected.push({ id: 2, name: "Llamar cliente" });
+              if ($scope.selected == []) {
+                $scope.selected = [{ id: 2, name: "Llamar cliente" }];
+              } else {
+                $scope.selected.push({ id: 2, name: "Llamar cliente" });
+              }
+            }
+            if (
+              LastServiceAlert.Acciones[LastServiceAlert.Acciones.length - 1]
+                .LlamarProveedor
+            ) {
+              if ($scope.selected == []) {
+                $scope.selected = [{ id: 3, name: "Llamar proveedor" }];
+              } else {
+                $scope.selected.push({ id: 3, name: "Llamar proveedor" });
+              }
+            }
+            if (
+              LastServiceAlert.Acciones[LastServiceAlert.Acciones.length - 1]
+                .Serealizaelreporte
+            ) {
+              if ($scope.selected == []) {
+                $scope.selected = [
+                  {
+                    id: 4,
+                    name: "Se realiza el reporte de las novedades del servicio",
+                  },
+                ];
+              } else {
+                $scope.selected.push({
+                  id: 4,
+                  name: "Se realiza el reporte de las novedades del servicio",
+                });
+              }
             }
 
-            $scope.actualAction =
-              LastServiceAlert.FollowUpAction["@DisplayString"];
             if (
               LastServiceAlert.ServiceAlertStatus["@DisplayString"] ==
                 "Pending" &&
@@ -226,29 +226,21 @@ define(["modules/platform/platformModule"], function () {
         );
         //Fin refresh
       };
+
       $scope.refresh();
-      // $scope.startAlerts();
-      // $scope.$watch("SelectedAcciones", function (nowSelected) {
-      //   $scope.selectedValues = [];
-      //   if (!nowSelected) {
-      //     return;
-      //   }
-      //   angular.forEach(nowSelected, function (val) {
-      //     $scope.selectedValues.push(val.Name);
-      //   });
-      // });
+
       $scope.formInfo.beforeApplyClick = function () {
         if (!applied) {
-          if (
-            $scope.LastServiceAlert.ServiceAlertStatus["@DisplayString"] ==
-            "Accepted"
-          ) {
-            $scope.LastServiceAlert.ServiceAlertStatus.Key = 857653252;
-          } else {
-            $scope.LastServiceAlert.ServiceAlertStatus["@DisplayString"] =
-              "Manual Close";
-            $scope.LastServiceAlert.ServiceAlertStatus.Key = 649388032;
-          }
+          // if (
+          //   $scope.LastServiceAlert.ServiceAlertStatus["@DisplayString"] ==
+          //   "Accepted"
+          // ) {
+          //   $scope.LastServiceAlert.ServiceAlertStatus.Key = 857653252;
+          // } else {
+          //   $scope.LastServiceAlert.ServiceAlertStatus["@DisplayString"] =
+          //     "Manual Close";
+          //   $scope.LastServiceAlert.ServiceAlertStatus.Key = 649388032;
+          // }
           $scope.Satus =
             $scope.LastServiceAlert.ServiceAlertStatus["@DisplayString"];
           $scope.Coment = $scope.LastServiceAlert.FollowUpComments;
@@ -279,37 +271,50 @@ define(["modules/platform/platformModule"], function () {
             let fechaFin = new Date(fechaFinn).getTime();
             let diff = fechaFin - fechaInicio;
             let diff2 = fechaFin - fechaAccepted;
-
+            //Para las acciones
+            let boolActOne = false;
+            let boolActTwo = false;
+            let boolActThree = false;
+            let boolActFour = false;
+            if ($scope.selectedValues.includes("1")) {
+              boolActOne = true;
+            }
+            if ($scope.selectedValues.includes("2")) {
+              boolActTwo = true;
+            }
+            if ($scope.selectedValues.includes("3")) {
+              boolActThree = true;
+            }
+            if ($scope.selectedValues.includes("4")) {
+              boolActFour = true;
+            }
             if (
+              LastServiceAlert.ServiceAlertStatus["@DisplayString"] ==
+                "Pending" &&
               $scope.LastServiceAlert.ServiceAlertStatus["@DisplayString"] ==
-              "Accepted"
+                "Accepted"
             ) {
-              if (
-                $scope.LastServiceAlert.FollowUpAction["@DisplayString"] ==
-                  "Llamar al proveedor" ||
-                $scope.LastServiceAlert.FollowUpAction["@DisplayString"] ==
-                  "Llamar al cliente"
-              ) {
+              if (boolActOne || boolActTwo || boolActThree || boolActFour) {
                 let nextServiceAlertKey = LastServiceAlert["Key"];
                 $scope.ServiceAlertForUpdateQuery = {
                   "@objectType": "ServiceAlert",
                   Key: nextServiceAlertKey,
                   managementDate: managementD,
-                  notManageTime: Math.trunc(diff / (60 * 1000)), //Estos son los minutos que han pasado sin aceptar la alerta
+                  notManageTime: Math.trunc(diff / (60 * 1000)),
                   ServiceAlertStatus: {
-                    Name: $scope.LastServiceAlert.ServiceAlertStatus[
-                      "@DisplayString"
-                    ],
-                    Key: $scope.LastServiceAlert.ServiceAlertStatus.Key,
+                    Name: "Accepted",
+                    Key: 857653252,
                   },
                   FollowUpUser: $scope.LastServiceAlert.FollowUpUser,
                   FollowUpComments: $scope.LastServiceAlert.FollowUpComments,
-                  FollowUpAction: {
-                    Name: $scope.LastServiceAlert.FollowUpAction[
-                      "@DisplayString"
-                    ],
-                    Key: $scope.LastServiceAlert.FollowUpAction.Key,
-                  },
+                  Acciones: [
+                    {
+                      DevolverAlertaaFront: boolActOne,
+                      LlamarCliente: boolActTwo,
+                      LlamarProveedor: boolActThree,
+                      Serealizaelreporte: boolActFour,
+                    },
+                  ],
                 };
                 $scope.updateAndRefreshAlert($scope.ServiceAlertForUpdateQuery);
               } else {
@@ -327,30 +332,52 @@ define(["modules/platform/platformModule"], function () {
                   },
                   FollowUpUser: $scope.LastServiceAlert.FollowUpUser,
                   FollowUpComments: $scope.LastServiceAlert.FollowUpComments,
-                  FollowUpAction: {
-                    Name: "Llamar al cliente",
-                    Key: 989011968,
-                  },
+                  Acciones: [
+                    {
+                      DevolverAlertaaFront: boolActOne,
+                      LlamarCliente: boolActTwo,
+                      LlamarProveedor: boolActThree,
+                      Serealizaelreporte: boolActFour,
+                    },
+                  ],
                 };
                 $scope.updateAndRefreshAlert($scope.ServiceAlertForUpdateQuery);
                 console.log("Se aceptó sin comentarios");
               }
             } else if (
+              LastServiceAlert.ServiceAlertStatus["@DisplayString"] ==
+                "Accepted" &&
+              $scope.LastServiceAlert.ServiceAlertStatus["@DisplayString"] ==
+                "Accepted"
+            ) {
+              let nextServiceAlertKey = LastServiceAlert["Key"];
+              $scope.ServiceAlertForUpdateQuery = {
+                "@objectType": "ServiceAlert",
+                Key: nextServiceAlertKey,
+                FollowUpUser: $scope.LastServiceAlert.FollowUpUser,
+                FollowUpComments: $scope.LastServiceAlert.FollowUpComments,
+                Acciones: [
+                  {
+                    DevolverAlertaaFront: boolActOne,
+                    LlamarCliente: boolActTwo,
+                    LlamarProveedor: boolActThree,
+                    Serealizaelreporte: boolActFour,
+                  },
+                ],
+              };
+              $scope.updateAndRefreshAlert($scope.ServiceAlertForUpdateQuery);
+            } else if (
               $scope.LastServiceAlert.ServiceAlertStatus["@DisplayString"] ==
               "Manual Close"
             ) {
               if (
-                ($scope.LastServiceAlert.FollowUpAction["@DisplayString"] ==
-                  "Llamar al proveedor" ||
-                  $scope.LastServiceAlert.FollowUpAction["@DisplayString"] ==
-                    "Llamar al cliente") &&
-                $scope.LastServiceAlert.FollowUpComments.length > 0
+                (boolActOne || boolActTwo || boolActThree || boolActFour) &&
+                $scope.LastServiceAlert.FollowUpComments != ""
               ) {
                 let nextServiceAlertKey = LastServiceAlert["Key"];
                 $scope.ServiceAlertForUpdateQuery = {
                   "@objectType": "ServiceAlert",
                   Key: nextServiceAlertKey,
-                  //closeAlert: hoy,
                   manualCloseAlert: managementD,
                   manualManageTime: Math.trunc(diff2 / (60 * 1000)) - 300, //Estos son los minutos de gestión de la alerta
                   ServiceAlertStatus: {
@@ -361,12 +388,14 @@ define(["modules/platform/platformModule"], function () {
                   },
                   FollowUpUser: $scope.LastServiceAlert.FollowUpUser,
                   FollowUpComments: $scope.LastServiceAlert.FollowUpComments,
-                  FollowUpAction: {
-                    Name: $scope.LastServiceAlert.FollowUpAction[
-                      "@DisplayString"
-                    ],
-                    Key: $scope.LastServiceAlert.FollowUpAction.Key,
-                  },
+                  Acciones: [
+                    {
+                      DevolverAlertaaFront: boolActOne,
+                      LlamarCliente: boolActTwo,
+                      LlamarProveedor: boolActThree,
+                      Serealizaelreporte: boolActFour,
+                    },
+                  ],
                 };
                 $scope.updateAndRefreshAlert($scope.ServiceAlertForUpdateQuery);
               } else {
@@ -381,6 +410,7 @@ define(["modules/platform/platformModule"], function () {
           applied = false;
         }
       };
+
       $scope.updateAndRefreshAlert = async function (
         ServiceAlertForUpdateQuery
       ) {

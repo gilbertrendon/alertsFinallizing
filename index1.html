@@ -79,16 +79,14 @@
           <td>
             Acciones ejecutadas:
             <br />
-            <!-- <select
-              ng-model="selectedValues"
-              
-              multiple
-            >
-            <option value="1">Devolver</option>
-            <option value="2">Llamarc</option>
-            <option value="3">Llamarp</option>
-            <option value="4">Se</option> -->
-          </select>
+            <select multiple ng-model="selectedValues">
+              <option value="1">Devolver alerta a front</option>
+              <option value="2">Llamar cliente</option>
+              <option value="3">Llamar proveedor</option>
+              <option value="4">
+                Se realiza el reporte de las novedades del servicio
+              </option>
+            </select>
             <div>selectedValues = {{selectedValues}}</div>
           </td>
           <td>
@@ -104,16 +102,5 @@
         </tr>
       </tbody>
     </table>
-    <div>
-      <label>Select a Color:</label><br>
-      <select multiple ng-model="selectedValues">
-          <option value="1">Devolver alerta a front</option>
-          <option value="2">Llamar cliente</option>
-          <option value="3">Llamar proveedor</option>
-          <option value="4">Se realiza el reporte</option>
-      </select>
-      <br>
-      <div> selectedValues = {{selectedValues}}</div>
-    </div>
   </div>
 </div>
