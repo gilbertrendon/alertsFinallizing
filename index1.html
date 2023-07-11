@@ -39,14 +39,15 @@
           <td>{{alert.manualManageTime}}</td>
           <td>{{alert.Title}}</td>
           <td>{{alert.FollowUpUser}}</td>
-          <td>{{alert.FollowUpAction["@DisplayString"]}}</td>
+          <td>{{alert.Acciones}}</td>
           <td>{{alert.FollowUpComments}}</td>
         </tr>
         <tr style="color: #0875bf hsl(204, 92%, 39%) rgb(8, 117, 191)">
           <td>
             {{LastServiceAlert.ServiceAlertStatus['@DisplayString']}}
-            <select ng-model="LastServiceAlert.ServiceAlertStatus['@DisplayString']"
-            ng-change="updateVisibleState(LastServiceAlert.ServiceAlertStatus['@DisplayString'])"
+            <select
+              ng-model="LastServiceAlert.ServiceAlertStatus['@DisplayString']"
+              ng-change="updateVisibleState(LastServiceAlert.ServiceAlertStatus['@DisplayString'])"
               ng-options="opcion.Name for opcion in Opciones"
             ></select>
           </td>
@@ -76,15 +77,19 @@
             {{LastServiceAlert.FollowUpUser}}
           </td>
           <td>
-            &Uacute;ltima acci&oacute;n ejecutada:
+            Acciones ejecutadas:
             <br />
-            {{LastServiceAlert.FollowUpAction['@DisplayString']}}
-            <select
+            <!-- <select
+              ng-model="selectedValues"
               
-              ng-change="updateVisibleAction(LastServiceAlert.FollowUpAction['@DisplayString'])"
-              ng-model="LastServiceAlert.FollowUpAction['@DisplayString']"
-              ng-options="accion.Name for accion in Acciones"
-            ></select>
+              multiple
+            >
+            <option value="1">Devolver</option>
+            <option value="2">Llamarc</option>
+            <option value="3">Llamarp</option>
+            <option value="4">Se</option> -->
+          </select>
+            <div>selectedValues = {{selectedValues}}</div>
           </td>
           <td>
             <textarea
@@ -99,5 +104,16 @@
         </tr>
       </tbody>
     </table>
+    <div>
+      <label>Select a Color:</label><br>
+      <select multiple ng-model="selectedValues">
+          <option value="1">Devolver alerta a front</option>
+          <option value="2">Llamar cliente</option>
+          <option value="3">Llamar proveedor</option>
+          <option value="4">Se realiza el reporte</option>
+      </select>
+      <br>
+      <div> selectedValues = {{selectedValues}}</div>
+    </div>
   </div>
 </div>

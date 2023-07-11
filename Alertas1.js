@@ -11,6 +11,7 @@ define(["modules/platform/platformModule"], function () {
 
     async function ($scope, w6serverServices, $window) {
       {
+        $scope.myselect = "";
         $scope.Action = "";
         $scope.Coment = "";
         $scope.ServiceAlertForUpdateQuery = {};
@@ -34,6 +35,14 @@ define(["modules/platform/platformModule"], function () {
             Key: 989011968,
             Name: "Llamar al cliente",
           },
+          {
+            Key: 309641216,
+            Name: "Devolver Alerta a Front",
+          },
+          {
+            Key: 309649408,
+            Name: "Se realiza el reporte de las novedades del servicio",
+          },
         ];
         $scope.managementDateToShow = "";
         $scope.actualAction = "";
@@ -54,21 +63,49 @@ define(["modules/platform/platformModule"], function () {
         };
       }
 
-      $scope.updateVisibleState = function (visibleState) {
-        $scope.LastServiceAlert.ServiceAlertStatus["@DisplayString"] =
-          visibleState.Name;
-        if (visibleState.Key == 649388032) {
-          $scope.Opciones = [];
+      $scope.selectedValues = [];
+
+      $scope.$watch("selected", function (nowSelected) {
+        $scope.selectedValues = [];
+
+        if (!nowSelected) {
+          // here we've initialized selected already
+          // but sometimes that's not the case
+          // then we get null or undefined
+          return;
         }
+        angular.forEach(nowSelected, function (val) {
+          $scope.selectedValues.push(val.id.toString());
+        });
+      });
+      // $scope.startAlerts = async function () {
+
+      // };
+
+      $scope.updateVisibleState = function (visibleState) {
+        // const select = document.getElementById('myselect')
+        // const selectValues = [1, 2];
+        /* Iterate options of select element */
+        // for (const option of document.querySelectorAll("#myselect option")) {
+        // const value = Number.parseInt(option.label);
+        // if (selectValues.indexOf(value) !== -1) {
+        // option.setAttribute("selected", "selected");
+        // } else {
+        //   option.removeAttribute("selected");
+        //   console.log(option.innerHTML);
+        // }
+        // }
+        // if (visibleState.Key == 649388032) {
+        //   $scope.Opciones = [];
       };
 
       $scope.updateVisibleAction = function (visibleAction) {
-        $scope.LastServiceAlert.FollowUpAction["@DisplayString"] =
-          visibleAction.Name;
+        // ng-change="updateVisibleAction(LastServiceAlert.FollowUpAction['@DisplayString'])"
+        // $scope.LastServiceAlert.FollowUpAction["@DisplayString"] =
+        //   visibleAction.Name;
       };
 
       $scope.refresh = async function () {
-        console.log("aquí debe refrescar");
         //Inicio refresh
         let TaskCallID = $scope.formInfo.object.CallID;
         let TaskKey = $scope.formInfo.object.Key;
@@ -92,6 +129,28 @@ define(["modules/platform/platformModule"], function () {
 
               LastServiceAlert = $scope.LastServiceAlert;
             }
+            LastServiceAlert.Acciones[
+              LastServiceAlert.Acciones.length - 1
+            ].DevolverAlertaaFront = true;
+            LastServiceAlert.Acciones[
+              LastServiceAlert.Acciones.length - 1
+            ].LlamarCliente = true;
+
+            if (
+              LastServiceAlert.Acciones[LastServiceAlert.Acciones.length - 1]
+                .DevolverAlertaaFront
+            ) {
+              $scope.selected = [
+                { id: 1, name: "Devolver alerta a front" },
+              ];
+            }
+            if (
+              LastServiceAlert.Acciones[LastServiceAlert.Acciones.length - 1]
+                .DevolverAlertaaFront
+            ) {
+              $scope.selected.push({ id: 2, name: "Llamar cliente" });
+            }
+
             $scope.actualAction =
               LastServiceAlert.FollowUpAction["@DisplayString"];
             if (
@@ -135,21 +194,23 @@ define(["modules/platform/platformModule"], function () {
                   },
                 ];
               }
-            } else if ((
-              ((LastServiceAlert.ServiceAlertStatus["@DisplayString"] ==
+            } else if (
+              (((LastServiceAlert.ServiceAlertStatus["@DisplayString"] ==
                 "Accepted" &&
                 $scope.Satus != "Manual Close") ||
                 $scope.Satus == "Manual Close") &&
-              (LastServiceAlert.JeopardyState.Key == 334913536 ||
-                LastServiceAlert.JeopardyState.Key == 808681472) &&
-              ($scope.LastServiceAlert.FollowUpAction["@DisplayString"] ==
-                "Llamar al proveedor" ||
-                $scope.LastServiceAlert.FollowUpAction["@DisplayString"] ==
-                  "Llamar al cliente") &&
-              $scope.Coment.length > 0 &&
-              ($scope.Action == "Llamar al cliente" ||
-                $scope.Action == "Llamar al proveedor")
-            )||(LastServiceAlert.ServiceAlertStatus["@DisplayString"] == "Manual Close") ){
+                (LastServiceAlert.JeopardyState.Key == 334913536 ||
+                  LastServiceAlert.JeopardyState.Key == 808681472) &&
+                ($scope.LastServiceAlert.FollowUpAction["@DisplayString"] ==
+                  "Llamar al proveedor" ||
+                  $scope.LastServiceAlert.FollowUpAction["@DisplayString"] ==
+                    "Llamar al cliente") &&
+                $scope.Coment.length > 0 &&
+                ($scope.Action == "Llamar al cliente" ||
+                  $scope.Action == "Llamar al proveedor")) ||
+              LastServiceAlert.ServiceAlertStatus["@DisplayString"] ==
+                "Manual Close"
+            ) {
               LastServiceAlert.ServiceAlertStatus["@DisplayString"] =
                 "Manual Close";
               $scope.Opciones = [];
@@ -166,7 +227,16 @@ define(["modules/platform/platformModule"], function () {
         //Fin refresh
       };
       $scope.refresh();
-
+      // $scope.startAlerts();
+      // $scope.$watch("SelectedAcciones", function (nowSelected) {
+      //   $scope.selectedValues = [];
+      //   if (!nowSelected) {
+      //     return;
+      //   }
+      //   angular.forEach(nowSelected, function (val) {
+      //     $scope.selectedValues.push(val.Name);
+      //   });
+      // });
       $scope.formInfo.beforeApplyClick = function () {
         if (!applied) {
           if (
@@ -235,7 +305,9 @@ define(["modules/platform/platformModule"], function () {
                   FollowUpUser: $scope.LastServiceAlert.FollowUpUser,
                   FollowUpComments: $scope.LastServiceAlert.FollowUpComments,
                   FollowUpAction: {
-                    Name: $scope.LastServiceAlert.FollowUpAction["@DisplayString"],
+                    Name: $scope.LastServiceAlert.FollowUpAction[
+                      "@DisplayString"
+                    ],
                     Key: $scope.LastServiceAlert.FollowUpAction.Key,
                   },
                 };
@@ -290,7 +362,9 @@ define(["modules/platform/platformModule"], function () {
                   FollowUpUser: $scope.LastServiceAlert.FollowUpUser,
                   FollowUpComments: $scope.LastServiceAlert.FollowUpComments,
                   FollowUpAction: {
-                    Name: $scope.LastServiceAlert.FollowUpAction["@DisplayString"],
+                    Name: $scope.LastServiceAlert.FollowUpAction[
+                      "@DisplayString"
+                    ],
                     Key: $scope.LastServiceAlert.FollowUpAction.Key,
                   },
                 };
