@@ -11,6 +11,8 @@ define(["modules/platform/platformModule"], function () {
 
     async function ($scope, w6serverServices, $window) {
       {
+        $scope.colorete = false;
+        $scope.actionColorete = false;
         $scope.myselect = "";
         $scope.Action = "";
         $scope.Coment = "";
@@ -62,6 +64,23 @@ define(["modules/platform/platformModule"], function () {
       $scope.selectedValues = [];
       $scope.selected = [];
 
+      $scope.changeResalt = function () {
+        if ($scope.LastServiceAlert.FollowUpComments == "") {
+          $scope.colorete = true;
+        } else {
+          $scope.colorete = false;
+        }
+      };
+
+      $scope.changeActionsResalt = function () {
+        console.log("nepe");
+        if ($scope.LastServiceAlert.Acciones.length == 0) {
+          $scope.actionColorete = true;
+        } else {
+          $scope.actionColorete = false;
+        }
+      };
+
       $scope.$watch("selected", function (nowSelected) {
         $scope.selectedValues = [];
 
@@ -107,6 +126,9 @@ define(["modules/platform/platformModule"], function () {
 
               LastServiceAlert = $scope.LastServiceAlert;
             }
+            $scope.changeResalt();
+            $scope.changeActionsResalt();
+
             $scope.selected = [];
             if (
               LastServiceAlert.Acciones[LastServiceAlert.Acciones.length - 1]

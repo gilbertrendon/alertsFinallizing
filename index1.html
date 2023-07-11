@@ -40,9 +40,13 @@
           <td>{{alert.Title}}</td>
           <td>{{alert.FollowUpUser}}</td>
           <td>
-            Devolver: {{alert.Acciones[LastServiceAlert.Acciones.length].DevolverAlertaaFront}} LlamarCliente:
-            {{alert.Acciones[LastServiceAlert.Acciones.length].LlamarCliente}} LlamarProveedor:
-            {{alert.Acciones[LastServiceAlert.Acciones.length].LlamarProveedor}} Reporte:
+            Devolver:
+            {{alert.Acciones[LastServiceAlert.Acciones.length].DevolverAlertaaFront}}
+            LlamarCliente:
+            {{alert.Acciones[LastServiceAlert.Acciones.length].LlamarCliente}}
+            LlamarProveedor:
+            {{alert.Acciones[LastServiceAlert.Acciones.length].LlamarProveedor}}
+            Reporte:
             {{alert.Acciones[LastServiceAlert.Acciones.length].Serealizaelreporte}}
           </td>
           <td>{{alert.FollowUpComments}}</td>
@@ -84,7 +88,13 @@
           <td>
             Presione control para seleccionar varias acciones:
             <br />
-            <select multiple ng-model="selectedValues">
+
+            <select
+              ng-class="{'color': actionColorete}"
+              ng-change="changeActionsResalt()"
+              multiple
+              ng-model="selectedValues"
+            >
               <option value="1">Devolver alerta a front</option>
               <option value="2">Llamar cliente</option>
               <option value="3">Llamar proveedor</option>
@@ -95,6 +105,9 @@
           </td>
           <td>
             <textarea
+              ng-class="{'color': colorete}"
+              ng-change="changeResalt()"
+              id="coments"
               rows="4"
               cols="30"
               name="comment"

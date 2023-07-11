@@ -88,3 +88,7 @@ td {
 .headtable{
   background-color: solid gray;
 }
+.color{
+  border-color: rgb(255, 34, 0);
+  border-width: medium;
+}
