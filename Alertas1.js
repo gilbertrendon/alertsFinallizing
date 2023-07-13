@@ -20,11 +20,11 @@ define(["modules/platform/platformModule"], function () {
         $scope.Satus = "";
         $scope.Opciones = [
           {
-            Key:857653251,
+            Value: 857653251,
             Name: "Pending",
           },
           {
-            Key: 857653252,
+            Value: 857653252,
             Name: "Accepted",
           },
         ];
@@ -110,14 +110,6 @@ define(["modules/platform/platformModule"], function () {
           $scope.selectedValues.push(val.id.toString());
         });
       });
-
-      $scope.updateVisibleState = function (visibleState) {
-        $scope.LastServiceAlert.ServiceAlertStatus["@DisplayString"] =
-          visibleState;
-        if (visibleState.Key == 649388032) {
-          $scope.Opciones = [];
-        }
-      };
       $scope.refresh = async function () {
         //Inicio refresh
         let TaskCallID = $scope.formInfo.object.CallID;
@@ -138,9 +130,18 @@ define(["modules/platform/platformModule"], function () {
             if ($scope.ServiceAlertKeys !== null) {
               $scope.LastServiceAlert =
                 $scope.ServiceAlertKeys[$scope.ServiceAlertKeys.length - 1];
+
               $scope.LastServiceAlert = $scope.clearDate(
                 $scope.LastServiceAlert
               );
+
+              $scope.PresentStatus = {
+                Value: $scope.LastServiceAlert.ServiceAlertStatus.Key,
+                Name: $scope.LastServiceAlert.ServiceAlertStatus[
+                  "@DisplayString"
+                ],
+              };
+
               $scope.ServiceAlertKeys.pop();
 
               PresentLastServiceAlert = $scope.LastServiceAlert;
@@ -210,11 +211,11 @@ define(["modules/platform/platformModule"], function () {
             ) {
               $scope.Opciones = [
                 {
-                  Key:857653251,
+                  Value: 857653251,
                   Name: "Pending",
                 },
                 {
-                  Key: 857653252,
+                  Value: 857653252,
                   Name: "Accepted",
                 },
               ];
@@ -243,8 +244,12 @@ define(["modules/platform/platformModule"], function () {
               } else {
                 $scope.Opciones = [
                   {
+                    Value: 857653252,
+                    Name: "Accepted",
+                  },
+                  {
                     Name: "Manual Close",
-                    Key: 649388032,
+                    Value: 649388032,
                   },
                 ];
               }
@@ -287,15 +292,16 @@ define(["modules/platform/platformModule"], function () {
       $scope.refresh();
 
       $scope.formInfo.beforeApplyClick = function () {
+        console.log("********************************");
+        console.log($scope.PresentStatus);
         if (!applied) {
-          $scope.Satus =
-            $scope.LastServiceAlert.ServiceAlertStatus["@DisplayString"];
+          $scope.Satus = $scope.PresentStatus.Name;
           $scope.Coment = $scope.LastServiceAlert.FollowUpComments;
           $scope.Action =
             $scope.LastServiceAlert.FollowUpAction["@DisplayString"];
           if (
-            $scope.LastServiceAlert.ServiceAlertStatus.Name == "Accepted" ||
-            $scope.LastServiceAlert.ServiceAlertStatus.Name == "Manual Close"
+            $scope.PresentStatus.Name == "Accepted" ||
+            $scope.PresentStatus.Name == "Manual Close"
           ) {
             const numberOfMlSeconds = new Date(Date.now()).getTime();
             let newDateObj = new Date(numberOfMlSeconds);
@@ -370,7 +376,7 @@ define(["modules/platform/platformModule"], function () {
             if (
               PresentLastServiceAlert.ServiceAlertStatus["@DisplayString"] ==
                 "Pending" &&
-              $scope.LastServiceAlert.ServiceAlertStatus.Name == "Accepted"
+              $scope.PresentStatus.Name == "Accepted"
             ) {
               if (boolActOne || boolActTwo || boolActThree || boolActFour) {
                 let nextServiceAlertKey = PresentLastServiceAlert["Key"];
@@ -424,7 +430,7 @@ define(["modules/platform/platformModule"], function () {
             } else if (
               PresentLastServiceAlert.ServiceAlertStatus["@DisplayString"] ==
                 "Accepted" &&
-              $scope.LastServiceAlert.ServiceAlertStatus.Name == "Accepted"
+              $scope.PresentStatus.Name == "Accepted"
             ) {
               let nextServiceAlertKey = PresentLastServiceAlert["Key"];
               $scope.ServiceAlertForUpdateQuery = {
@@ -450,7 +456,7 @@ define(["modules/platform/platformModule"], function () {
             } else if (
               PresentLastServiceAlert.ServiceAlertStatus["@DisplayString"] ==
                 "Accepted" &&
-              $scope.LastServiceAlert.ServiceAlertStatus.Name == "Manual Close"
+              $scope.PresentStatus.Name == "Manual Close"
             ) {
               if (
                 (boolActOne || boolActTwo || boolActThree || boolActFour) &&
@@ -489,7 +495,7 @@ define(["modules/platform/platformModule"], function () {
             } else if (
               PresentLastServiceAlert.ServiceAlertStatus["@DisplayString"] ==
                 "Manual Close" &&
-              $scope.LastServiceAlert.ServiceAlertStatus.Name == "Manual Close"
+              $scope.PresentStatus.Name == "Manual Close"
             ) {
               let nextServiceAlertKey = PresentLastServiceAlert["Key"];
               $scope.ServiceAlertForUpdateQuery = {

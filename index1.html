@@ -53,14 +53,11 @@
         </tr>
         <tr style="color: #0875bf hsl(204, 92%, 39%) rgb(8, 117, 191)">
           <td>
-            {{LastServiceAlert.ServiceAlertStatus['@DisplayString']}}
+            {{PresentStatus}}
             <select
-              ng-model="LastServiceAlert.ServiceAlertStatus"
-              ng-change="updateVisibleState(LastServiceAlert.ServiceAlertStatus.Name)"
-              ng-options="opcion.Name for opcion in Opciones"
-            >
-            <!-- <option ng-selected>{{LastServiceAlert.ServiceAlertStatus['@DisplayString']}}</option> -->
-          </select>
+              ng-model="PresentStatus"
+              ng-options="opcion.Name for opcion in Opciones track by opcion.Value"
+            ></select>
           </td>
           <td ng-model="LastServiceAlert.Stamp.TimeCreated">
             {{LastServiceAlert.CreationTime}}
