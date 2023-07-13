@@ -240,7 +240,12 @@ define(["modules/platform/platformModule"], function () {
               if (f1 != 0) {
                 PresentLastServiceAlert.ServiceAlertStatus["@DisplayString"] =
                   "Manual Close";
-                $scope.Opciones = [];
+                $scope.Opciones = [
+                  {
+                    Name: "Manual Close",
+                    Value: 649388032,
+                  },
+                ];
               } else {
                 $scope.Opciones = [
                   {
@@ -272,12 +277,19 @@ define(["modules/platform/platformModule"], function () {
             ) {
               PresentLastServiceAlert.ServiceAlertStatus["@DisplayString"] =
                 "Manual Close";
-              $scope.nextAction = {};
-              $scope.Opciones = [];
-            } else {
-              $scope.nextAction = {};
-              $scope.Opciones = [];
+              $scope.Opciones = [
+                {
+                  Name: "Manual Close",
+                  Value: 649388032,
+                },
+              ];
             }
+            $scope.Opciones = [
+              {
+                Name: "Manual Close",
+                Value: 649388032,
+              },
+            ];
           },
           function (error) {
             alert(
