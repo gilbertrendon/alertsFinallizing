@@ -1,7 +1,7 @@
 //Not Scheduled Tecnico HAROLD_GPL01
 //otro tipo de alerta
 define(["modules/platform/platformModule"], function () {
-  let LastServiceAlert = [];
+  let PresentLastServiceAlert = [];
   let data = {};
   let applied = false;
   angular.module("platformModule").controller("ServiceAlertFormController", [
@@ -19,6 +19,10 @@ define(["modules/platform/platformModule"], function () {
         $scope.ServiceAlertForUpdateQuery = {};
         $scope.Satus = "";
         $scope.Opciones = [
+          {
+            Key:857653251,
+            Name: "Pending",
+          },
           {
             Key: 857653252,
             Name: "Accepted",
@@ -109,7 +113,7 @@ define(["modules/platform/platformModule"], function () {
 
       $scope.updateVisibleState = function (visibleState) {
         $scope.LastServiceAlert.ServiceAlertStatus["@DisplayString"] =
-          visibleState.Name;
+          visibleState;
         if (visibleState.Key == 649388032) {
           $scope.Opciones = [];
         }
@@ -139,13 +143,10 @@ define(["modules/platform/platformModule"], function () {
               );
               $scope.ServiceAlertKeys.pop();
 
-              LastServiceAlert = $scope.LastServiceAlert;
+              PresentLastServiceAlert = $scope.LastServiceAlert;
             }
 
             $scope.selected = [];
-            if ($scope.LastServiceAlert.FollowUpActions.length == 0) {
-              console.log("no hay acciones");
-            }
             if ($scope.LastServiceAlert.FollowUpActions.length > 0) {
               let i;
               for (
@@ -203,36 +204,40 @@ define(["modules/platform/platformModule"], function () {
             }
 
             if (
-              LastServiceAlert.ServiceAlertStatus["@DisplayString"] ==
+              PresentLastServiceAlert.ServiceAlertStatus["@DisplayString"] ==
                 "Pending" &&
               $scope.Satus != "Accepted"
             ) {
               $scope.Opciones = [
+                {
+                  Key:857653251,
+                  Name: "Pending",
+                },
                 {
                   Key: 857653252,
                   Name: "Accepted",
                 },
               ];
             } else if (
-              (LastServiceAlert.ServiceAlertStatus["@DisplayString"] ==
+              (PresentLastServiceAlert.ServiceAlertStatus["@DisplayString"] ==
                 "Accepted" ||
                 $scope.Satus == "Accepted") &&
-              LastServiceAlert.JeopardyState.Key != 334913536 &&
-              LastServiceAlert.JeopardyState.Key != 808681472
+              PresentLastServiceAlert.JeopardyState.Key != 334913536 &&
+              PresentLastServiceAlert.JeopardyState.Key != 808681472
             ) {
               $scope.Opciones = [];
             } else if (
-              ((LastServiceAlert.ServiceAlertStatus["@DisplayString"] ==
+              ((PresentLastServiceAlert.ServiceAlertStatus["@DisplayString"] ==
                 "Accepted" &&
                 $scope.Satus != "Manual Close") ||
                 $scope.Satus == "Accepted") &&
-              (LastServiceAlert.JeopardyState.Key == 334913536 ||
-                LastServiceAlert.JeopardyState.Key == 808681472)
+              (PresentLastServiceAlert.JeopardyState.Key == 334913536 ||
+                PresentLastServiceAlert.JeopardyState.Key == 808681472)
             ) {
-              let f1 = LastServiceAlert.manualManageTime;
+              let f1 = PresentLastServiceAlert.manualManageTime;
 
               if (f1 != 0) {
-                LastServiceAlert.ServiceAlertStatus["@DisplayString"] =
+                PresentLastServiceAlert.ServiceAlertStatus["@DisplayString"] =
                   "Manual Close";
                 $scope.Opciones = [];
               } else {
@@ -244,12 +249,12 @@ define(["modules/platform/platformModule"], function () {
                 ];
               }
             } else if (
-              (((LastServiceAlert.ServiceAlertStatus["@DisplayString"] ==
+              (((PresentLastServiceAlert.ServiceAlertStatus["@DisplayString"] ==
                 "Accepted" &&
                 $scope.Satus != "Manual Close") ||
                 $scope.Satus == "Manual Close") &&
                 (LastServiceAlert.JeopardyState.Key == 334913536 ||
-                  LastServiceAlert.JeopardyState.Key == 808681472) &&
+                  PresentLastServiceAlert.JeopardyState.Key == 808681472) &&
                 ($scope.LastServiceAlert.FollowUpAction["@DisplayString"] ==
                   "Llamar al proveedor" ||
                   $scope.LastServiceAlert.FollowUpAction["@DisplayString"] ==
@@ -257,13 +262,15 @@ define(["modules/platform/platformModule"], function () {
                 $scope.Coment.length > 0 &&
                 ($scope.Action == "Llamar al cliente" ||
                   $scope.Action == "Llamar al proveedor")) ||
-              LastServiceAlert.ServiceAlertStatus["@DisplayString"] ==
+              PresentLastServiceAlert.ServiceAlertStatus["@DisplayString"] ==
                 "Manual Close"
             ) {
-              LastServiceAlert.ServiceAlertStatus["@DisplayString"] =
+              PresentLastServiceAlert.ServiceAlertStatus["@DisplayString"] =
                 "Manual Close";
+              $scope.nextAction = {};
               $scope.Opciones = [];
             } else {
+              $scope.nextAction = {};
               $scope.Opciones = [];
             }
           },
@@ -277,7 +284,6 @@ define(["modules/platform/platformModule"], function () {
         );
         //Fin refresh
       };
-
       $scope.refresh();
 
       $scope.formInfo.beforeApplyClick = function () {
@@ -288,10 +294,8 @@ define(["modules/platform/platformModule"], function () {
           $scope.Action =
             $scope.LastServiceAlert.FollowUpAction["@DisplayString"];
           if (
-            $scope.LastServiceAlert.ServiceAlertStatus["@DisplayString"] ==
-              "Accepted" ||
-            $scope.LastServiceAlert.ServiceAlertStatus["@DisplayString"] ==
-              "Manual Close"
+            $scope.LastServiceAlert.ServiceAlertStatus.Name == "Accepted" ||
+            $scope.LastServiceAlert.ServiceAlertStatus.Name == "Manual Close"
           ) {
             const numberOfMlSeconds = new Date(Date.now()).getTime();
             let newDateObj = new Date(numberOfMlSeconds);
@@ -300,8 +304,8 @@ define(["modules/platform/platformModule"], function () {
             const hoy = new Date(hoyy);
             const managemethoy = new Date(newDateObjj);
             const managementD = new Date(managemethoy);
-            let fechaInicioo = LastServiceAlert.CreationTime;
-            let fechaAcceptedd = LastServiceAlert.managementDate;
+            let fechaInicioo = PresentLastServiceAlert.CreationTime;
+            let fechaAcceptedd = PresentLastServiceAlert.managementDate;
             let fechaFinn = hoy;
             let fechaInicio = new Date(fechaInicioo).getTime();
             const numberOfMlSecondss = new Date(fechaAcceptedd).getTime();
@@ -364,13 +368,12 @@ define(["modules/platform/platformModule"], function () {
               });
             }
             if (
-              LastServiceAlert.ServiceAlertStatus["@DisplayString"] ==
+              PresentLastServiceAlert.ServiceAlertStatus["@DisplayString"] ==
                 "Pending" &&
-              $scope.LastServiceAlert.ServiceAlertStatus["@DisplayString"] ==
-                "Accepted"
+              $scope.LastServiceAlert.ServiceAlertStatus.Name == "Accepted"
             ) {
               if (boolActOne || boolActTwo || boolActThree || boolActFour) {
-                let nextServiceAlertKey = LastServiceAlert["Key"];
+                let nextServiceAlertKey = PresentLastServiceAlert["Key"];
                 $scope.ServiceAlertForUpdateQuery = {
                   "@objectType": "ServiceAlert",
                   Key: nextServiceAlertKey,
@@ -394,7 +397,7 @@ define(["modules/platform/platformModule"], function () {
                 };
                 $scope.updateAndRefreshAlert($scope.ServiceAlertForUpdateQuery);
               } else {
-                let nextServiceAlertKey = LastServiceAlert["Key"];
+                let nextServiceAlertKey = PresentLastServiceAlert["Key"];
                 $scope.ServiceAlertForUpdateQuery = {
                   "@objectType": "ServiceAlert",
                   Key: nextServiceAlertKey,
@@ -417,15 +420,13 @@ define(["modules/platform/platformModule"], function () {
                   FollowUpActions: actionss,
                 };
                 $scope.updateAndRefreshAlert($scope.ServiceAlertForUpdateQuery);
-                console.log("Se aceptó sin comentarios");
               }
             } else if (
-              LastServiceAlert.ServiceAlertStatus["@DisplayString"] ==
+              PresentLastServiceAlert.ServiceAlertStatus["@DisplayString"] ==
                 "Accepted" &&
-              $scope.LastServiceAlert.ServiceAlertStatus["@DisplayString"] ==
-                "Accepted"
+              $scope.LastServiceAlert.ServiceAlertStatus.Name == "Accepted"
             ) {
-              let nextServiceAlertKey = LastServiceAlert["Key"];
+              let nextServiceAlertKey = PresentLastServiceAlert["Key"];
               $scope.ServiceAlertForUpdateQuery = {
                 "@objectType": "ServiceAlert",
                 Key: nextServiceAlertKey,
@@ -447,16 +448,15 @@ define(["modules/platform/platformModule"], function () {
               };
               $scope.updateAndRefreshAlert($scope.ServiceAlertForUpdateQuery);
             } else if (
-              LastServiceAlert.ServiceAlertStatus["@DisplayString"] ==
+              PresentLastServiceAlert.ServiceAlertStatus["@DisplayString"] ==
                 "Accepted" &&
-              $scope.LastServiceAlert.ServiceAlertStatus["@DisplayString"] ==
-                "Manual Close"
+              $scope.LastServiceAlert.ServiceAlertStatus.Name == "Manual Close"
             ) {
               if (
                 (boolActOne || boolActTwo || boolActThree || boolActFour) &&
                 $scope.LastServiceAlert.FollowUpComments != ""
               ) {
-                let nextServiceAlertKey = LastServiceAlert["Key"];
+                let nextServiceAlertKey = PresentLastServiceAlert["Key"];
                 $scope.ServiceAlertForUpdateQuery = {
                   "@objectType": "ServiceAlert",
                   Key: nextServiceAlertKey,
@@ -487,12 +487,11 @@ define(["modules/platform/platformModule"], function () {
                 $scope.changeActionsResalt();
               }
             } else if (
-              LastServiceAlert.ServiceAlertStatus["@DisplayString"] ==
+              PresentLastServiceAlert.ServiceAlertStatus["@DisplayString"] ==
                 "Manual Close" &&
-              $scope.LastServiceAlert.ServiceAlertStatus["@DisplayString"] ==
-                "Manual Close"
+              $scope.LastServiceAlert.ServiceAlertStatus.Name == "Manual Close"
             ) {
-              let nextServiceAlertKey = LastServiceAlert["Key"];
+              let nextServiceAlertKey = PresentLastServiceAlert["Key"];
               $scope.ServiceAlertForUpdateQuery = {
                 "@objectType": "ServiceAlert",
                 Key: nextServiceAlertKey,
@@ -509,7 +508,6 @@ define(["modules/platform/platformModule"], function () {
                 FollowUpActions: actionss,
               };
               $scope.updateAndRefreshAlert($scope.ServiceAlertForUpdateQuery);
-              console.log("Solo se modifican comentarios y acciones");
             }
           }
           applied = true;
@@ -529,15 +527,15 @@ define(["modules/platform/platformModule"], function () {
         );
         await resultUpdateSAStatus.$promise.then(async function () {
           let ServiceAlertQuery = {
-            filter: "Key eq " + LastServiceAlert.Key,
+            filter: "Key eq " + PresentLastServiceAlert.Key,
           };
           let finalresult = w6serverServices.getObjects(
             "ServiceAlert",
             ServiceAlertQuery
           );
           await finalresult.$promise.then(function (data) {
-            LastServiceAlert = data;
-            $scope.LastServiceAlert = LastServiceAlert[0];
+            PresentLastServiceAlert = data;
+            $scope.LastServiceAlert = PresentLastServiceAlert[0];
             $scope.actualAction =
               $scope.LastServiceAlert.FollowUpAction["@DisplayString"];
             let f1 = $scope.LastServiceAlert.manualManageTime;

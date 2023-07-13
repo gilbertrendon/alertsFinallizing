@@ -55,10 +55,12 @@
           <td>
             {{LastServiceAlert.ServiceAlertStatus['@DisplayString']}}
             <select
-              ng-model="LastServiceAlert.ServiceAlertStatus['@DisplayString']"
-              ng-change="updateVisibleState(LastServiceAlert.ServiceAlertStatus['@DisplayString'])"
+              ng-model="LastServiceAlert.ServiceAlertStatus"
+              ng-change="updateVisibleState(LastServiceAlert.ServiceAlertStatus.Name)"
               ng-options="opcion.Name for opcion in Opciones"
-            ></select>
+            >
+            <!-- <option ng-selected>{{LastServiceAlert.ServiceAlertStatus['@DisplayString']}}</option> -->
+          </select>
           </td>
           <td ng-model="LastServiceAlert.Stamp.TimeCreated">
             {{LastServiceAlert.CreationTime}}
