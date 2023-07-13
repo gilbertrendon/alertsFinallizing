@@ -64,6 +64,19 @@ define(["modules/platform/platformModule"], function () {
       $scope.selectedValues = [];
       $scope.selected = [];
 
+      $scope.clearDate = function (alerta) {
+        if (alerta.managementDate == "1899-12-30T00:00:00") {
+          alerta.managementDate = "";
+        }
+        if (alerta.closeAlert == "1899-12-30T00:00:00") {
+          alerta.closeAlert = "";
+        }
+        if (alerta.manualCloseAlert == "1899-12-30T00:00:00") {
+          alerta.manualCloseAlert = "";
+        }
+        return alerta;
+      };
+
       $scope.changeResalt = function () {
         if ($scope.LastServiceAlert.FollowUpComments == "") {
           $scope.colorete = true;
@@ -73,8 +86,7 @@ define(["modules/platform/platformModule"], function () {
       };
 
       $scope.changeActionsResalt = function () {
-        console.log("nepe");
-        if ($scope.LastServiceAlert.Acciones.length == 0) {
+        if ($scope.selectedValues.length == 0) {
           $scope.actionColorete = true;
         } else {
           $scope.actionColorete = false;
@@ -122,56 +134,71 @@ define(["modules/platform/platformModule"], function () {
             if ($scope.ServiceAlertKeys !== null) {
               $scope.LastServiceAlert =
                 $scope.ServiceAlertKeys[$scope.ServiceAlertKeys.length - 1];
+              $scope.LastServiceAlert = $scope.clearDate(
+                $scope.LastServiceAlert
+              );
               $scope.ServiceAlertKeys.pop();
 
               LastServiceAlert = $scope.LastServiceAlert;
             }
-            $scope.changeResalt();
-            $scope.changeActionsResalt();
 
             $scope.selected = [];
-            if (
-              LastServiceAlert.Acciones[LastServiceAlert.Acciones.length - 1]
-                .DevolverAlertaaFront
-            ) {
-              $scope.selected = [{ id: 1, name: "Devolver alerta a front" }];
+            if ($scope.LastServiceAlert.FollowUpActions.length == 0) {
+              console.log("no hay acciones");
             }
-            if (
-              LastServiceAlert.Acciones[LastServiceAlert.Acciones.length - 1]
-                .LlamarCliente
-            ) {
-              if ($scope.selected == []) {
-                $scope.selected = [{ id: 2, name: "Llamar cliente" }];
-              } else {
-                $scope.selected.push({ id: 2, name: "Llamar cliente" });
-              }
-            }
-            if (
-              LastServiceAlert.Acciones[LastServiceAlert.Acciones.length - 1]
-                .LlamarProveedor
-            ) {
-              if ($scope.selected == []) {
-                $scope.selected = [{ id: 3, name: "Llamar proveedor" }];
-              } else {
-                $scope.selected.push({ id: 3, name: "Llamar proveedor" });
-              }
-            }
-            if (
-              LastServiceAlert.Acciones[LastServiceAlert.Acciones.length - 1]
-                .Serealizaelreporte
-            ) {
-              if ($scope.selected == []) {
-                $scope.selected = [
-                  {
-                    id: 4,
-                    name: "Se realiza el reporte de las novedades del servicio",
-                  },
-                ];
-              } else {
-                $scope.selected.push({
-                  id: 4,
-                  name: "Se realiza el reporte de las novedades del servicio",
-                });
+            if ($scope.LastServiceAlert.FollowUpActions.length > 0) {
+              let i;
+              for (
+                i = 0;
+                i < $scope.LastServiceAlert.FollowUpActions.length;
+                i++
+              ) {
+                if (
+                  $scope.LastServiceAlert.FollowUpActions[i].Action.Key ==
+                  309641216
+                ) {
+                  $scope.selected = [
+                    { id: 1, name: "Devolver alerta a front" },
+                  ];
+                }
+                if (
+                  $scope.LastServiceAlert.FollowUpActions[i].Action.Key ==
+                  989011968
+                ) {
+                  if ($scope.selected == []) {
+                    $scope.selected = [{ id: 2, name: "Llamar cliente" }];
+                  } else {
+                    $scope.selected.push({ id: 2, name: "Llamar cliente" });
+                  }
+                }
+                if (
+                  $scope.LastServiceAlert.FollowUpActions[i].Action.Key ==
+                  989003776
+                ) {
+                  if ($scope.selected == []) {
+                    $scope.selected = [{ id: 3, name: "Llamar proveedor" }];
+                  } else {
+                    $scope.selected.push({ id: 3, name: "Llamar proveedor" });
+                  }
+                }
+                if (
+                  $scope.LastServiceAlert.FollowUpActions[i].Action.Key ==
+                  309649408
+                ) {
+                  if ($scope.selected == []) {
+                    $scope.selected = [
+                      {
+                        id: 4,
+                        name: "Se realiza el reporte de las novedades del servicio",
+                      },
+                    ];
+                  } else {
+                    $scope.selected.push({
+                      id: 4,
+                      name: "Se realiza el reporte de las novedades del servicio",
+                    });
+                  }
+                }
               }
             }
 
@@ -290,17 +317,51 @@ define(["modules/platform/platformModule"], function () {
             let boolActTwo = false;
             let boolActThree = false;
             let boolActFour = false;
+            let actionss = [];
             if ($scope.selectedValues.includes("1")) {
               boolActOne = true;
+              actionss.push({
+                "@objectType": "Item",
+                Action: {
+                  Key: 309641216,
+                  "@DisplayString": "Devolver Alerta a Front",
+                },
+                ActionDate: "1899-12-30T00:00:00",
+              });
             }
             if ($scope.selectedValues.includes("2")) {
               boolActTwo = true;
+              actionss.push({
+                "@objectType": "Item",
+                Action: {
+                  Key: 989011968,
+                  "@DisplayString": "Llamar al cliente",
+                },
+                ActionDate: "1899-12-30T00:00:00",
+              });
             }
             if ($scope.selectedValues.includes("3")) {
               boolActThree = true;
+              actionss.push({
+                "@objectType": "Item",
+                Action: {
+                  Key: 989003776,
+                  "@DisplayString": "Llamar al proveedor",
+                },
+                ActionDate: "1899-12-30T00:00:00",
+              });
             }
             if ($scope.selectedValues.includes("4")) {
               boolActFour = true;
+              actionss.push({
+                "@objectType": "Item",
+                Action: {
+                  Key: 309649408,
+                  "@DisplayString":
+                    "Se realiza el reporte de las novedades del servicio",
+                },
+                ActionDate: "1899-12-30T00:00:00",
+              });
             }
             if (
               LastServiceAlert.ServiceAlertStatus["@DisplayString"] ==
@@ -321,14 +382,15 @@ define(["modules/platform/platformModule"], function () {
                   },
                   FollowUpUser: $scope.LastServiceAlert.FollowUpUser,
                   FollowUpComments: $scope.LastServiceAlert.FollowUpComments,
-                  Acciones: [
-                    {
-                      DevolverAlertaaFront: boolActOne,
-                      LlamarCliente: boolActTwo,
-                      LlamarProveedor: boolActThree,
-                      Serealizaelreporte: boolActFour,
-                    },
-                  ],
+                  // Acciones: [
+                  //   {
+                  //     DevolverAlertaaFront: boolActOne,
+                  //     LlamarCliente: boolActTwo,
+                  //     LlamarProveedor: boolActThree,
+                  //     Serealizaelreporte: boolActFour,
+                  //   },
+                  // ],
+                  FollowUpActions: actionss,
                 };
                 $scope.updateAndRefreshAlert($scope.ServiceAlertForUpdateQuery);
               } else {
@@ -344,14 +406,15 @@ define(["modules/platform/platformModule"], function () {
                   },
                   FollowUpUser: $scope.LastServiceAlert.FollowUpUser,
                   FollowUpComments: $scope.LastServiceAlert.FollowUpComments,
-                  Acciones: [
-                    {
-                      DevolverAlertaaFront: boolActOne,
-                      LlamarCliente: boolActTwo,
-                      LlamarProveedor: boolActThree,
-                      Serealizaelreporte: boolActFour,
-                    },
-                  ],
+                  // Acciones: [
+                  //   {
+                  //     DevolverAlertaaFront: boolActOne,
+                  //     LlamarCliente: boolActTwo,
+                  //     LlamarProveedor: boolActThree,
+                  //     Serealizaelreporte: boolActFour,
+                  //   },
+                  // ],
+                  FollowUpActions: actionss,
                 };
                 $scope.updateAndRefreshAlert($scope.ServiceAlertForUpdateQuery);
                 console.log("Se aceptó sin comentarios");
@@ -372,14 +435,15 @@ define(["modules/platform/platformModule"], function () {
                   Name: "Accepted",
                   Key: 857653252,
                 },
-                Acciones: [
-                  {
-                    DevolverAlertaaFront: boolActOne,
-                    LlamarCliente: boolActTwo,
-                    LlamarProveedor: boolActThree,
-                    Serealizaelreporte: boolActFour,
-                  },
-                ],
+                // Acciones: [
+                //   {
+                //     DevolverAlertaaFront: boolActOne,
+                //     LlamarCliente: boolActTwo,
+                //     LlamarProveedor: boolActThree,
+                //     Serealizaelreporte: boolActFour,
+                //   },
+                // ],
+                FollowUpActions: actionss,
               };
               $scope.updateAndRefreshAlert($scope.ServiceAlertForUpdateQuery);
             } else if (
@@ -404,20 +468,23 @@ define(["modules/platform/platformModule"], function () {
                   },
                   FollowUpUser: $scope.LastServiceAlert.FollowUpUser,
                   FollowUpComments: $scope.LastServiceAlert.FollowUpComments,
-                  Acciones: [
-                    {
-                      DevolverAlertaaFront: boolActOne,
-                      LlamarCliente: boolActTwo,
-                      LlamarProveedor: boolActThree,
-                      Serealizaelreporte: boolActFour,
-                    },
-                  ],
+                  // Acciones: [
+                  //   {
+                  //     DevolverAlertaaFront: boolActOne,
+                  //     LlamarCliente: boolActTwo,
+                  //     LlamarProveedor: boolActThree,
+                  //     Serealizaelreporte: boolActFour,
+                  //   },
+                  // ],
+                  FollowUpActions: actionss,
                 };
                 $scope.updateAndRefreshAlert($scope.ServiceAlertForUpdateQuery);
               } else {
                 alert(
                   "Se debe ingresar una acción ejecutada y un comentario para la transición a estado cerrada manualmente"
                 );
+                $scope.changeResalt();
+                $scope.changeActionsResalt();
               }
             } else if (
               LastServiceAlert.ServiceAlertStatus["@DisplayString"] ==
@@ -431,14 +498,15 @@ define(["modules/platform/platformModule"], function () {
                 Key: nextServiceAlertKey,
                 FollowUpUser: $scope.LastServiceAlert.FollowUpUser,
                 FollowUpComments: $scope.LastServiceAlert.FollowUpComments,
-                Acciones: [
-                  {
-                    DevolverAlertaaFront: boolActOne,
-                    LlamarCliente: boolActTwo,
-                    LlamarProveedor: boolActThree,
-                    Serealizaelreporte: boolActFour,
-                  },
-                ],
+                // Acciones: [
+                //   {
+                //     DevolverAlertaaFront: boolActOne,
+                //     LlamarCliente: boolActTwo,
+                //     LlamarProveedor: boolActThree,
+                //     Serealizaelreporte: boolActFour,
+                //   },
+                // ],
+                FollowUpActions: actionss,
               };
               $scope.updateAndRefreshAlert($scope.ServiceAlertForUpdateQuery);
               console.log("Solo se modifican comentarios y acciones");
