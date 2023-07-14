@@ -111,7 +111,6 @@ define(["modules/platform/platformModule"], function () {
         });
       });
       $scope.refresh = async function () {
-        //Inicio refresh
         let TaskCallID = $scope.formInfo.object.CallID;
         let TaskKey = $scope.formInfo.object.Key;
         $scope.CallIDg = TaskCallID;
@@ -127,7 +126,7 @@ define(["modules/platform/platformModule"], function () {
           function (ServiceAlertData) {
             $scope.ServiceAlertKeys = ServiceAlertData;
 
-            if ($scope.ServiceAlertKeys !== null) {
+            if ($scope.ServiceAlertKeys.length > 0) {
               $scope.LastServiceAlert =
                 $scope.ServiceAlertKeys[$scope.ServiceAlertKeys.length - 1];
 
@@ -226,7 +225,12 @@ define(["modules/platform/platformModule"], function () {
               PresentLastServiceAlert.JeopardyState.Key != 334913536 &&
               PresentLastServiceAlert.JeopardyState.Key != 808681472
             ) {
-              $scope.Opciones = [];
+              $scope.Opciones = [
+                {
+                  Value: 857653252,
+                  Name: "Accepted",
+                },
+              ];
             } else if (
               ((PresentLastServiceAlert.ServiceAlertStatus["@DisplayString"] ==
                 "Accepted" &&
@@ -284,12 +288,6 @@ define(["modules/platform/platformModule"], function () {
                 },
               ];
             }
-            $scope.Opciones = [
-              {
-                Name: "Manual Close",
-                Value: 649388032,
-              },
-            ];
           },
           function (error) {
             alert(
@@ -299,7 +297,6 @@ define(["modules/platform/platformModule"], function () {
             return error;
           }
         );
-        //Fin refresh
       };
       $scope.refresh();
 
@@ -403,14 +400,6 @@ define(["modules/platform/platformModule"], function () {
                   },
                   FollowUpUser: $scope.LastServiceAlert.FollowUpUser,
                   FollowUpComments: $scope.LastServiceAlert.FollowUpComments,
-                  // Acciones: [
-                  //   {
-                  //     DevolverAlertaaFront: boolActOne,
-                  //     LlamarCliente: boolActTwo,
-                  //     LlamarProveedor: boolActThree,
-                  //     Serealizaelreporte: boolActFour,
-                  //   },
-                  // ],
                   FollowUpActions: actionss,
                 };
                 $scope.updateAndRefreshAlert($scope.ServiceAlertForUpdateQuery);
@@ -427,14 +416,6 @@ define(["modules/platform/platformModule"], function () {
                   },
                   FollowUpUser: $scope.LastServiceAlert.FollowUpUser,
                   FollowUpComments: $scope.LastServiceAlert.FollowUpComments,
-                  // Acciones: [
-                  //   {
-                  //     DevolverAlertaaFront: boolActOne,
-                  //     LlamarCliente: boolActTwo,
-                  //     LlamarProveedor: boolActThree,
-                  //     Serealizaelreporte: boolActFour,
-                  //   },
-                  // ],
                   FollowUpActions: actionss,
                 };
                 $scope.updateAndRefreshAlert($scope.ServiceAlertForUpdateQuery);
@@ -454,14 +435,6 @@ define(["modules/platform/platformModule"], function () {
                   Name: "Accepted",
                   Key: 857653252,
                 },
-                // Acciones: [
-                //   {
-                //     DevolverAlertaaFront: boolActOne,
-                //     LlamarCliente: boolActTwo,
-                //     LlamarProveedor: boolActThree,
-                //     Serealizaelreporte: boolActFour,
-                //   },
-                // ],
                 FollowUpActions: actionss,
               };
               $scope.updateAndRefreshAlert($scope.ServiceAlertForUpdateQuery);
@@ -486,14 +459,6 @@ define(["modules/platform/platformModule"], function () {
                   },
                   FollowUpUser: $scope.LastServiceAlert.FollowUpUser,
                   FollowUpComments: $scope.LastServiceAlert.FollowUpComments,
-                  // Acciones: [
-                  //   {
-                  //     DevolverAlertaaFront: boolActOne,
-                  //     LlamarCliente: boolActTwo,
-                  //     LlamarProveedor: boolActThree,
-                  //     Serealizaelreporte: boolActFour,
-                  //   },
-                  // ],
                   FollowUpActions: actionss,
                 };
                 $scope.updateAndRefreshAlert($scope.ServiceAlertForUpdateQuery);
@@ -515,14 +480,6 @@ define(["modules/platform/platformModule"], function () {
                 Key: nextServiceAlertKey,
                 FollowUpUser: $scope.LastServiceAlert.FollowUpUser,
                 FollowUpComments: $scope.LastServiceAlert.FollowUpComments,
-                // Acciones: [
-                //   {
-                //     DevolverAlertaaFront: boolActOne,
-                //     LlamarCliente: boolActTwo,
-                //     LlamarProveedor: boolActThree,
-                //     Serealizaelreporte: boolActFour,
-                //   },
-                // ],
                 FollowUpActions: actionss,
               };
               $scope.updateAndRefreshAlert($scope.ServiceAlertForUpdateQuery);
@@ -537,7 +494,6 @@ define(["modules/platform/platformModule"], function () {
       $scope.updateAndRefreshAlert = async function (
         ServiceAlertForUpdateQuery
       ) {
-        //Inicio getRefreshAlert
         let resultUpdateSAStatus = w6serverServices.updateObject(
           "ServiceAlert",
           ServiceAlertForUpdateQuery,
@@ -568,7 +524,6 @@ define(["modules/platform/platformModule"], function () {
         $scope.Satus =
           $scope.LastServiceAlert.ServiceAlertStatus["@DisplayString"];
         $scope.refresh();
-        //Fin getRefreshAlert
       };
     },
   ]);
