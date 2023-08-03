@@ -204,8 +204,7 @@ define(["modules/platform/platformModule"], function () {
             }
 
             if (
-              PresentLastServiceAlert.ServiceAlertStatus["@DisplayString"] ==
-                "Pending" &&
+              PresentLastServiceAlert.ServiceAlertStatus.Key == 857653251 &&
               $scope.Satus != "Accepted"
             ) {
               $scope.Opciones = [
@@ -219,8 +218,7 @@ define(["modules/platform/platformModule"], function () {
                 },
               ];
             } else if (
-              (PresentLastServiceAlert.ServiceAlertStatus["@DisplayString"] ==
-                "Accepted" ||
+              (PresentLastServiceAlert.ServiceAlertStatus.Key == 857653252 ||
                 $scope.Satus == "Accepted") &&
               PresentLastServiceAlert.JeopardyState.Key != 334913536 &&
               PresentLastServiceAlert.JeopardyState.Key != 808681472
@@ -232,8 +230,7 @@ define(["modules/platform/platformModule"], function () {
                 },
               ];
             } else if (
-              ((PresentLastServiceAlert.ServiceAlertStatus["@DisplayString"] ==
-                "Accepted" &&
+              ((PresentLastServiceAlert.ServiceAlertStatus.Key == 857653252 &&
                 $scope.Satus != "Manual Close") ||
                 $scope.Satus == "Accepted") &&
               (PresentLastServiceAlert.JeopardyState.Key == 334913536 ||
@@ -263,8 +260,7 @@ define(["modules/platform/platformModule"], function () {
                 ];
               }
             } else if (
-              (((PresentLastServiceAlert.ServiceAlertStatus["@DisplayString"] ==
-                "Accepted" &&
+              (((PresentLastServiceAlert.ServiceAlertStatus.Key == 857653252 &&
                 $scope.Satus != "Manual Close") ||
                 $scope.Satus == "Manual Close") &&
                 (LastServiceAlert.JeopardyState.Key == 334913536 ||
@@ -285,6 +281,15 @@ define(["modules/platform/platformModule"], function () {
                 {
                   Name: "Manual Close",
                   Value: 649388032,
+                },
+              ];
+            } else if (
+              PresentLastServiceAlert.ServiceAlertStatus.Key == 857653253
+            ) {
+              $scope.Opciones = [
+                {
+                  Value: 857653253,
+                  Name: "Closed",
                 },
               ];
             }
@@ -383,8 +388,7 @@ define(["modules/platform/platformModule"], function () {
               });
             }
             if (
-              PresentLastServiceAlert.ServiceAlertStatus["@DisplayString"] ==
-                "Pending" &&
+              PresentLastServiceAlert.ServiceAlertStatus.Key == 857653251 &&//pending
               $scope.PresentStatus.Name == "Accepted"
             ) {
               if (boolActOne || boolActTwo || boolActThree || boolActFour) {
@@ -421,8 +425,7 @@ define(["modules/platform/platformModule"], function () {
                 $scope.updateAndRefreshAlert($scope.ServiceAlertForUpdateQuery);
               }
             } else if (
-              PresentLastServiceAlert.ServiceAlertStatus["@DisplayString"] ==
-                "Accepted" &&
+              PresentLastServiceAlert.ServiceAlertStatus.Key == 857653252 &&//Accepted
               $scope.PresentStatus.Name == "Accepted"
             ) {
               let nextServiceAlertKey = PresentLastServiceAlert["Key"];
@@ -439,8 +442,7 @@ define(["modules/platform/platformModule"], function () {
               };
               $scope.updateAndRefreshAlert($scope.ServiceAlertForUpdateQuery);
             } else if (
-              PresentLastServiceAlert.ServiceAlertStatus["@DisplayString"] ==
-                "Accepted" &&
+              PresentLastServiceAlert.ServiceAlertStatus.Key == 857653252 &&
               $scope.PresentStatus.Name == "Manual Close"
             ) {
               if (
@@ -457,7 +459,7 @@ define(["modules/platform/platformModule"], function () {
                     Name: "Manual Close",
                     Key: 649388032,
                   },
-                  FollowUpUser: $scope.LastServiceAlert.FollowUpUser,
+                  FollowCloseUser: $scope.LastServiceAlert.FollowCloseUser,
                   FollowUpComments: $scope.LastServiceAlert.FollowUpComments,
                   FollowUpActions: actionss,
                 };
@@ -470,15 +472,14 @@ define(["modules/platform/platformModule"], function () {
                 $scope.changeActionsResalt();
               }
             } else if (
-              PresentLastServiceAlert.ServiceAlertStatus["@DisplayString"] ==
-                "Manual Close" &&
+              PresentLastServiceAlert.ServiceAlertStatus.Key == 649388032 &&
               $scope.PresentStatus.Name == "Manual Close"
             ) {
               let nextServiceAlertKey = PresentLastServiceAlert["Key"];
               $scope.ServiceAlertForUpdateQuery = {
                 "@objectType": "ServiceAlert",
                 Key: nextServiceAlertKey,
-                FollowUpUser: $scope.LastServiceAlert.FollowUpUser,
+                // FollowCloseUser: $scope.LastServiceAlert.FollowUpUser, no se cambia porque carolina dijo que era solo el que la cerraba
                 FollowUpComments: $scope.LastServiceAlert.FollowUpComments,
                 FollowUpActions: actionss,
               };

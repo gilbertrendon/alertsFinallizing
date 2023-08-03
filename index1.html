@@ -8,20 +8,21 @@
   </div>
   <div>
     <table class="table">
-      <thead role="rowgroup" style="background-color: #bec3c7">
-        <tr>
-          <th>Estado</th>
-          <th>Fecha de creaci&oacute;n</th>
-          <th>Fecha de gesti&oacute;n</th>
-          <th>Fecha de cierre</th>
-          <th>Fecha de cierre manual</th>
-          <th>Tiempo no gestionada</th>
-          <th>Tiempo gestionada</th>
-          <th>Tiempo de gesti&oacute;n manual</th>
-          <th>Tipo de alerta</th>
-          <th>Gestionada por:</th>
-          <th>Accion(es)</th>
-          <th>Comentarios</th>
+      <thead role="grid" style="background-color: #bec3c7">
+        <tr role="row" class="gridHeaderMultipleSelection">
+          <th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;"><span>Estado</span></th>
+          <th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;">Fecha de creaci&oacute;n</th>
+          <th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;">Fecha de gesti&oacute;n</th>
+          <th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;">Fecha de cierre</th>
+          <th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;">Fecha de cierre manual</th>
+          <th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;">Tiempo no gestionada</th>
+          <th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;">Tiempo gestionada</th>
+          <th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;">Tiempo de gesti&oacute;n manual</th>
+          <th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;">Tipo de alerta</th>
+          <th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;">Aceptada por:</th>
+          <th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;">Cerrada por:</th>
+          <th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;">Accion(es)</th>
+          <th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;">Comentarios</th>
         </tr>
       </thead>
       <tbody>
@@ -29,27 +30,24 @@
           style="color: #0875bf hsl(204, 92%, 39%) rgb(8, 117, 191)"
           ng-repeat="alert in ServiceAlertKeys"
         >
-          <td>{{alert.ServiceAlertStatus['@DisplayString']}}</td>
-          <td>{{alert.CreationTime}}</td>
-          <td>{{LastServiceAlert.managementDate}}</td>
-          <td>{{alert.closeAlert}}</td>
-          <td>{{alert.manualCloseAlert}}</td>
-          <td>{{alert.notManageTime}}</td>
-          <td>{{alert.manageTime}}</td>
-          <td>{{alert.manualManageTime}}</td>
-          <td>{{alert.Title}}</td>
-          <td>{{alert.FollowUpUser}}</td>
-          <td>
-            Devolver:
+          <td role="gridcell" style="padding: 8px">{{alert.ServiceAlertStatus['@DisplayString']}}</td>
+          <td role="gridcell" style="padding: 8px">{{alert.CreationTime}}</td>
+          <td role="gridcell" style="padding: 8px">{{LastServiceAlert.managementDate}}</td>
+          <td role="gridcell" style="padding: 8px" >{{alert.closeAlert}}</td>
+          <td role="gridcell" style="padding: 8px">{{alert.manualCloseAlert}}</td>
+          <td role="gridcell" style="padding: 8px" >{{alert.notManageTime}}</td>
+          <td role="gridcell" style="padding: 8px" >{{alert.manageTime}}</td>
+          <td role="gridcell" style="padding: 8px" >{{alert.manualManageTime}}</td>
+          <td role="gridcell" style="padding: 8px">{{alert.Title}}</td>
+          <td role="gridcell" style="padding: 8px">{{alert.FollowUpUser}}</td>
+          <td role="gridcell" style="padding: 8px">{{alert.FollowCloseUser}}</td>
+          <td role="gridcell" style="padding: 8px">
             {{alert.Acciones[LastServiceAlert.Acciones.length].DevolverAlertaaFront}}
-            LlamarCliente:
             {{alert.Acciones[LastServiceAlert.Acciones.length].LlamarCliente}}
-            LlamarProveedor:
             {{alert.Acciones[LastServiceAlert.Acciones.length].LlamarProveedor}}
-            Reporte:
             {{alert.Acciones[LastServiceAlert.Acciones.length].Serealizaelreporte}}
           </td>
-          <td>{{alert.FollowUpComments}}</td>
+          <td role="gridcell" style="padding: 8px">{{alert.FollowUpComments}}</td>
         </tr>
         <tr style="color: #0875bf hsl(204, 92%, 39%) rgb(8, 117, 191)">
           <td>
@@ -82,6 +80,9 @@
           <td ng-model="LastServiceAlert.Title">{{LastServiceAlert.Title}}</td>
           <td ng-model="LastServiceAlert.FollowUpUser">
             {{LastServiceAlert.FollowUpUser}}
+          </td>
+          <td ng-model="LastServiceAlert.FollowUpUser">
+            {{LastServiceAlert.FollowCloseUser}}
           </td>
           <td>
             Presione control para seleccionar varias acciones:
