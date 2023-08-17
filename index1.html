@@ -12,12 +12,13 @@
         <tr role="row" class="gridHeaderMultipleSelection">
           <th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;"><span>Estado</span></th>
           <th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;">Fecha de creaci&oacute;n</th>
-          <th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;">Fecha de gesti&oacute;n</th>
+          <th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;">Fecha de aceptaci&oacute;n</th>
           <th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;">Fecha de cierre</th>
           <th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;">Fecha de cierre manual</th>
           <th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;">Tiempo no gestionada</th>
           <th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;">Tiempo gestionada</th>
           <th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;">Tiempo de gesti&oacute;n manual</th>
+          <th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;">Tiempo total</th>
           <th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;">Tipo de alerta</th>
           <th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;">Aceptada por:</th>
           <th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;">Cerrada por:</th>
@@ -32,12 +33,13 @@
         >
           <td role="gridcell" style="padding: 8px">{{alert.ServiceAlertStatus['@DisplayString']}}</td>
           <td role="gridcell" style="padding: 8px">{{alert.CreationTime}}</td>
-          <td role="gridcell" style="padding: 8px">{{LastServiceAlert.managementDate}}</td>
-          <td role="gridcell" style="padding: 8px" >{{alert.closeAlert}}</td>
+          <td role="gridcell" style="padding: 8px">{{alert.managementDate}}</td>
+          <td role="gridcell" style="padding: 8px">{{alert.closeAlert}}</td>
           <td role="gridcell" style="padding: 8px">{{alert.manualCloseAlert}}</td>
           <td role="gridcell" style="padding: 8px" >{{alert.notManageTime}}</td>
           <td role="gridcell" style="padding: 8px" >{{alert.manageTime}}</td>
           <td role="gridcell" style="padding: 8px" >{{alert.manualManageTime}}</td>
+          <td role="gridcell" style="padding: 8px" >{{alert.totalTimeDuration}}</td>
           <td role="gridcell" style="padding: 8px">{{alert.Title}}</td>
           <td role="gridcell" style="padding: 8px">{{alert.FollowUpUser}}</td>
           <td role="gridcell" style="padding: 8px">{{alert.FollowCloseUser}}</td>
@@ -71,11 +73,14 @@
           <td ng-model="LastServiceAlert.notManageTime">
             {{LastServiceAlert.notManageTime}}
           </td>
-          <td ng-model="LastServiceAlert.manageTime">
+          <td ng-model="LastServiceAlert.notManageTime">
             {{LastServiceAlert.manageTime}}
           </td>
           <td ng-model="LastServiceAlert.manualManageTime">
             {{LastServiceAlert.manualManageTime}}
+          </td>
+          <td ng-model="LastServiceAlert.totalTime">
+            {{LastServiceAlert.totalTimeDuration}}
           </td>
           <td ng-model="LastServiceAlert.Title">{{LastServiceAlert.Title}}</td>
           <td ng-model="LastServiceAlert.FollowUpUser">

@@ -69,6 +69,25 @@ define(["modules/platform/platformModule"], function () {
       $scope.selected = [];
 
       $scope.clearDate = function (alerta) {
+        //Para limpiar el arreglo de las alertas pasadas
+        let i;
+        for (
+          i = 0;
+          i < $scope.ServiceAlertKeys.length;
+          i++
+        ) {
+          if($scope.ServiceAlertKeys[i].managementDate == "1899-12-30T00:00:00") {
+            $scope.ServiceAlertKeys[i].managementDate= "";
+          }
+          if($scope.ServiceAlertKeys[i].closeAlert == "1899-12-30T00:00:00") {
+            $scope.ServiceAlertKeys[i].closeAlert= "";
+          }
+          if($scope.ServiceAlertKeys[i].manualCloseAlert == "1899-12-30T00:00:00") {
+            $scope.ServiceAlertKeys[i].manualCloseAlert= "";
+          }
+        
+        }
+
         if (alerta.managementDate == "1899-12-30T00:00:00") {
           alerta.managementDate = "";
         }
@@ -155,7 +174,7 @@ define(["modules/platform/platformModule"], function () {
                 i++
               ) {
                 if (
-                  $scope.LastServiceAlert.FollowUpActions[i].Action.Key ==
+                  $scope.LastServiceAlert.FollowUpActions[i].Key ==
                   309641216
                 ) {
                   $scope.selected = [
@@ -163,7 +182,7 @@ define(["modules/platform/platformModule"], function () {
                   ];
                 }
                 if (
-                  $scope.LastServiceAlert.FollowUpActions[i].Action.Key ==
+                  $scope.LastServiceAlert.FollowUpActions[i].Key ==
                   989011968
                 ) {
                   if ($scope.selected == []) {
@@ -173,7 +192,7 @@ define(["modules/platform/platformModule"], function () {
                   }
                 }
                 if (
-                  $scope.LastServiceAlert.FollowUpActions[i].Action.Key ==
+                  $scope.LastServiceAlert.FollowUpActions[i].Key ==
                   989003776
                 ) {
                   if ($scope.selected == []) {
@@ -183,7 +202,7 @@ define(["modules/platform/platformModule"], function () {
                   }
                 }
                 if (
-                  $scope.LastServiceAlert.FollowUpActions[i].Action.Key ==
+                  $scope.LastServiceAlert.FollowUpActions[i].Key ==
                   309649408
                 ) {
                   if ($scope.selected == []) {
@@ -306,8 +325,6 @@ define(["modules/platform/platformModule"], function () {
       $scope.refresh();
 
       $scope.formInfo.beforeApplyClick = function () {
-        console.log("********************************");
-        console.log($scope.PresentStatus);
         if (!applied) {
           $scope.Satus = $scope.PresentStatus.Name;
           $scope.Coment = $scope.LastServiceAlert.FollowUpComments;
@@ -345,46 +362,30 @@ define(["modules/platform/platformModule"], function () {
             if ($scope.selectedValues.includes("1")) {
               boolActOne = true;
               actionss.push({
-                "@objectType": "Item",
-                Action: {
                   Key: 309641216,
                   "@DisplayString": "Devolver Alerta a Front",
-                },
-                ActionDate: "1899-12-30T00:00:00",
               });
             }
             if ($scope.selectedValues.includes("2")) {
               boolActTwo = true;
               actionss.push({
-                "@objectType": "Item",
-                Action: {
                   Key: 989011968,
                   "@DisplayString": "Llamar al cliente",
-                },
-                ActionDate: "1899-12-30T00:00:00",
               });
             }
             if ($scope.selectedValues.includes("3")) {
               boolActThree = true;
               actionss.push({
-                "@objectType": "Item",
-                Action: {
                   Key: 989003776,
                   "@DisplayString": "Llamar al proveedor",
-                },
-                ActionDate: "1899-12-30T00:00:00",
               });
             }
             if ($scope.selectedValues.includes("4")) {
               boolActFour = true;
               actionss.push({
-                "@objectType": "Item",
-                Action: {
                   Key: 309649408,
                   "@DisplayString":
                     "Se realiza el reporte de las novedades del servicio",
-                },
-                ActionDate: "1899-12-30T00:00:00",
               });
             }
             if (
@@ -393,11 +394,17 @@ define(["modules/platform/platformModule"], function () {
             ) {
               if (boolActOne || boolActTwo || boolActThree || boolActFour) {
                 let nextServiceAlertKey = PresentLastServiceAlert["Key"];
+                let oneOrnoCeros = "";
+                if(Math.trunc(diff / (60 * 1000)).toString().length == 1){
+                  oneOrnoCeros = "0";
+                }
                 $scope.ServiceAlertForUpdateQuery = {
                   "@objectType": "ServiceAlert",
                   Key: nextServiceAlertKey,
                   managementDate: managementD,
                   notManageTime: Math.trunc(diff / (60 * 1000)),
+                  notManageTimeStr: "00:"+oneOrnoCeros+Math.trunc(diff / (60 * 1000)).toString()+":00",
+                  // totalTime: (PresentLastServiceAlert.notManageTime + PresentLastServiceAlert.manualManageTime).toString(),
                   ServiceAlertStatus: {
                     Name: "Accepted",
                     Key: 857653252,
@@ -409,18 +416,24 @@ define(["modules/platform/platformModule"], function () {
                 $scope.updateAndRefreshAlert($scope.ServiceAlertForUpdateQuery);
               } else {
                 let nextServiceAlertKey = PresentLastServiceAlert["Key"];
+                let oneOrnoCeros = "";
+                if(Math.trunc(diff / (60 * 1000)).toString().length == 1){
+                  oneOrnoCeros = "0";
+                }
                 $scope.ServiceAlertForUpdateQuery = {
                   "@objectType": "ServiceAlert",
                   Key: nextServiceAlertKey,
                   managementDate: managementD,
                   notManageTime: Math.trunc(diff / (60 * 1000)),
+                  notManageTimeStr: "00:"+oneOrnoCeros+Math.trunc(diff / (60 * 1000)).toString()+":00",
+                  // totalTime: (PresentLastServiceAlert.notManageTime + PresentLastServiceAlert.manualManageTime).toString(),
                   ServiceAlertStatus: {
                     Name: "Accepted",
                     Key: 857653252,
                   },
                   FollowUpUser: $scope.LastServiceAlert.FollowUpUser,
                   FollowUpComments: $scope.LastServiceAlert.FollowUpComments,
-                  FollowUpActions: actionss,
+                  //FollowUpActions: actionss,
                 };
                 $scope.updateAndRefreshAlert($scope.ServiceAlertForUpdateQuery);
               }
@@ -455,11 +468,14 @@ define(["modules/platform/platformModule"], function () {
                   Key: nextServiceAlertKey,
                   manualCloseAlert: managementD,
                   manualManageTime: Math.trunc(diff2 / (60 * 1000)) - 300, //Estos son los minutos de gestión de la alerta
+                  manualManageTimeStr: "00:"+(Math.trunc(diff2 / (60 * 1000)) - 300).toString()+":00",
+                  totalTimeDuration: PresentLastServiceAlert.notManageTime + Math.trunc(diff2 / (60 * 1000)) - 300,
+                  totalTime: "00:"+(PresentLastServiceAlert.notManageTime + Math.trunc(diff2 / (60 * 1000)) - 300).toString()+":00",
                   ServiceAlertStatus: {
                     Name: "Manual Close",
                     Key: 649388032,
                   },
-                  FollowCloseUser: $scope.LastServiceAlert.FollowCloseUser,
+                  FollowCloseUser: $scope.LastServiceAlert.FollowUpUser,
                   FollowUpComments: $scope.LastServiceAlert.FollowUpComments,
                   FollowUpActions: actionss,
                 };
