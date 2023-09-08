@@ -76,15 +76,6 @@ td {
   border-right: 1px solid #cbcbcb ;
   border-left: 1px solid #cbcbcb;
 }
-
-  .tablegridg{
-  border-collapse: separate;
-  height: 207px;
-  border-bottom: 1px solid #cbcbcb ;
-  border-right: 1px solid #cbcbcb ;
-  border-left: 1px solid #cbcbcb;
-}
-
 .headtable{
   background-color: solid gray;
 }

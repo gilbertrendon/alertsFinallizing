@@ -38,11 +38,11 @@ define(["modules/platform/platformModule"], function () {
             Name: "Llamar al cliente",
           },
           {
-            Key: 309641216,
+            Key: 790560768,
             Name: "Devolver Alerta a Front",
           },
           {
-            Key: 309649408,
+            Key: 790568960,
             Name: "Se realiza el reporte de las novedades del servicio",
           },
         ];
@@ -173,7 +173,7 @@ define(["modules/platform/platformModule"], function () {
                 i++
               ) {
                 if (
-                  $scope.LastServiceAlert.FollowUpActions[i].Key == 309641216
+                  $scope.LastServiceAlert.FollowUpActions[i].Key == 790560768
                 ) {
                   $scope.selected = [
                     { id: 1, name: "Devolver alerta a front" },
@@ -198,7 +198,7 @@ define(["modules/platform/platformModule"], function () {
                   }
                 }
                 if (
-                  $scope.LastServiceAlert.FollowUpActions[i].Key == 309649408
+                  $scope.LastServiceAlert.FollowUpActions[i].Key == 790568960
                 ) {
                   if ($scope.selected == []) {
                     $scope.selected = [
@@ -258,7 +258,7 @@ define(["modules/platform/platformModule"], function () {
                 $scope.Opciones = [
                   {
                     Name: "Manual Close",
-                    Value: 649388032,
+                    Value: 870252544,
                   },
                 ];
               } else {
@@ -269,7 +269,7 @@ define(["modules/platform/platformModule"], function () {
                   },
                   {
                     Name: "Manual Close",
-                    Value: 649388032,
+                    Value: 870252544,
                   },
                 ];
               }
@@ -294,7 +294,7 @@ define(["modules/platform/platformModule"], function () {
               $scope.Opciones = [
                 {
                   Name: "Manual Close",
-                  Value: 649388032,
+                  Value: 870252544,
                 },
               ];
             } else if (
@@ -321,6 +321,7 @@ define(["modules/platform/platformModule"], function () {
 
       $scope.formInfo.beforeApplyClick = function () {
         if (!applied) {
+          console.log("entró*******************************************");
           $scope.Satus = $scope.PresentStatus.Name;
           $scope.Coment = $scope.LastServiceAlert.FollowUpComments;
           $scope.Action =
@@ -357,7 +358,7 @@ define(["modules/platform/platformModule"], function () {
             if ($scope.selectedValues.includes("1")) {
               boolActOne = true;
               actionss.push({
-                Key: 309641216,
+                Key: 790560768,
                 "@DisplayString": "Devolver Alerta a Front",
               });
             }
@@ -378,7 +379,7 @@ define(["modules/platform/platformModule"], function () {
             if ($scope.selectedValues.includes("4")) {
               boolActFour = true;
               actionss.push({
-                Key: 309649408,
+                Key: 790568960,
                 "@DisplayString":
                   "Se realiza el reporte de las novedades del servicio",
               });
@@ -489,7 +490,7 @@ define(["modules/platform/platformModule"], function () {
                     ":00",
                   ServiceAlertStatus: {
                     Name: "Manual Close",
-                    Key: 649388032,
+                    Key: 870252544,
                   },
                   FollowCloseUser: $scope.LastServiceAlert.FollowUpUser,
                   FollowUpComments: $scope.LastServiceAlert.FollowUpComments,
@@ -504,7 +505,7 @@ define(["modules/platform/platformModule"], function () {
                 $scope.changeActionsResalt();
               }
             } else if (
-              PresentLastServiceAlert.ServiceAlertStatus.Key == 649388032 &&
+              PresentLastServiceAlert.ServiceAlertStatus.Key == 870252544 &&
               $scope.PresentStatus.Name == "Manual Close"
             ) {
               let nextServiceAlertKey = PresentLastServiceAlert["Key"];
@@ -562,7 +563,7 @@ define(["modules/platform/platformModule"], function () {
             if ($scope.selectedValues.includes("1")) {
               boolActOne = true;
               actionss.push({
-                Key: 309641216,
+                Key: 790560768,
                 "@DisplayString": "Devolver Alerta a Front",
               });
             }
@@ -583,7 +584,7 @@ define(["modules/platform/platformModule"], function () {
             if ($scope.selectedValues.includes("4")) {
               boolActFour = true;
               actionss.push({
-                Key: 309649408,
+                Key: 790568960,
                 "@DisplayString":
                   "Se realiza el reporte de las novedades del servicio",
               });
@@ -694,7 +695,7 @@ define(["modules/platform/platformModule"], function () {
                     ":00",
                   ServiceAlertStatus: {
                     Name: "Manual Close",
-                    Key: 649388032,
+                    Key: 870252544,
                   },
                   FollowCloseUser: $scope.LastServiceAlert.FollowUpUser,
                   FollowUpComments: $scope.LastServiceAlert.FollowUpComments,
@@ -709,7 +710,7 @@ define(["modules/platform/platformModule"], function () {
                 $scope.changeActionsResalt();
               }
             } else if (
-              PresentLastServiceAlert.ServiceAlertStatus.Key == 649388032 &&
+              PresentLastServiceAlert.ServiceAlertStatus.Key == 870252544 &&
               $scope.PresentStatus.Name == "Manual Close"
             ) {
               let nextServiceAlertKey = PresentLastServiceAlert["Key"];
