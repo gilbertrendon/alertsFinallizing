@@ -83,3 +83,14 @@ td {
   border-color: rgb(255, 34, 0);
   border-width: medium;
 }
+/* apartir de ak es la inserción */
+.progress-container {
+  width: 100%;
+  height: 30px;
+  background-color: #eee;
+}
+
+.progress {
+  height: 100%;
+  background-color: #4CAF50;
+}

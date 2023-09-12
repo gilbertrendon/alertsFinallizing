@@ -145,23 +145,79 @@ define(["modules/platform/platformModule"], function () {
             $scope.ServiceAlertKeys = ServiceAlertData;
 
             if ($scope.ServiceAlertKeys.length > 0) {
-              $scope.LastServiceAlert =
-                $scope.ServiceAlertKeys[$scope.ServiceAlertKeys.length - 1];
+              let positionLastAlert = 0;
+              let actionsAndCommentsPendingOrClosed= false;
+              for (let i = $scope.ServiceAlertKeys.length - 1; i >= 0; i--) {
+                if (
+                  $scope.ServiceAlertKeys[i].ServiceAlertStatus.Key == 857653251
+                ) {
+                  $scope.LastServiceAlert = $scope.ServiceAlertKeys[i];
+                  $scope.LastServiceAlert = $scope.clearDate(
+                    $scope.LastServiceAlert
+                  );
+                  $scope.PresentStatus = {
+                    Value: $scope.LastServiceAlert.ServiceAlertStatus.Key,
+                    Name: $scope.LastServiceAlert.ServiceAlertStatus[
+                      "@DisplayString"
+                    ],
+                  };
+                  PresentLastServiceAlert = $scope.LastServiceAlert;
+                  positionLastAlert = i;
+                  break; // Detener la búsqueda una vez que se haya encontrado el primer elemento "pending"
+                } else if (
+                  $scope.ServiceAlertKeys[i].ServiceAlertStatus.Key == 857653252
+                ) {
+                  $scope.LastServiceAlert = $scope.ServiceAlertKeys[i];
+                  $scope.ServiceAlertKeys.splice(i, 1);
+                  $scope.LastServiceAlert = $scope.clearDate(
+                    $scope.LastServiceAlert
+                  );
+                  $scope.PresentStatus = {
+                    Value: $scope.LastServiceAlert.ServiceAlertStatus.Key,
+                    Name: $scope.LastServiceAlert.ServiceAlertStatus[
+                      "@DisplayString"
+                    ],
+                  };
+                  PresentLastServiceAlert = $scope.LastServiceAlert;
+                  positionLastAlert = i;
+                  break; // Detener la búsqueda una vez que se haya encontrado el primer elemento "pending"
+                } else if (
+                  $scope.ServiceAlertKeys[i].ServiceAlertStatus.Key == 870252544 && !actionsAndCommentsPendingOrClosed 
+                ) {
+                  $scope.LastServiceAlert = $scope.ServiceAlertKeys[i];
+                  $scope.LastServiceAlert = $scope.clearDate(
+                    $scope.LastServiceAlert
+                  );
+                  $scope.PresentStatus = {
+                    Value: $scope.LastServiceAlert.ServiceAlertStatus.Key,
+                    Name: $scope.LastServiceAlert.ServiceAlertStatus[
+                      "@DisplayString"
+                    ],
+                  };
+                  PresentLastServiceAlert = $scope.LastServiceAlert;
+                  positionLastAlert = i;
+                  actionsAndCommentsPendingOrClosed = true;
+                } else if (
+                  $scope.ServiceAlertKeys[i].ServiceAlertStatus.Key == 857653253 && !actionsAndCommentsPendingOrClosed 
+                ) {
+                  $scope.LastServiceAlert = $scope.ServiceAlertKeys[i];
+                  $scope.LastServiceAlert = $scope.clearDate(
+                    $scope.LastServiceAlert
+                  );
 
-              $scope.LastServiceAlert = $scope.clearDate(
-                $scope.LastServiceAlert
-              );
-
-              $scope.PresentStatus = {
-                Value: $scope.LastServiceAlert.ServiceAlertStatus.Key,
-                Name: $scope.LastServiceAlert.ServiceAlertStatus[
-                  "@DisplayString"
-                ],
-              };
-
-              $scope.ServiceAlertKeys.pop();
-
-              PresentLastServiceAlert = $scope.LastServiceAlert;
+                  $scope.PresentStatus = {
+                    Value: $scope.LastServiceAlert.ServiceAlertStatus.Key,
+                    Name: $scope.LastServiceAlert.ServiceAlertStatus[
+                      "@DisplayString"
+                    ],
+                  };
+                  PresentLastServiceAlert = $scope.LastServiceAlert;
+                  positionLastAlert = i;
+                  actionsAndCommentsPendingOrClosed = true;
+                }
+              }
+              //se elimina la alerta que fue puesta para gestionar de la lista de alertas
+              $scope.ServiceAlertKeys.splice(positionLastAlert, 1);
             }
 
             $scope.selected = [];
@@ -234,7 +290,7 @@ define(["modules/platform/platformModule"], function () {
             } else if (
               (PresentLastServiceAlert.ServiceAlertStatus.Key == 857653252 ||
                 $scope.Satus == "Accepted") &&
-              PresentLastServiceAlert.JeopardyState.Key != 334913536 &&
+              PresentLastServiceAlert.JeopardyState.Key != 916520960 &&
               PresentLastServiceAlert.JeopardyState.Key != 808681472
             ) {
               $scope.Opciones = [
@@ -247,7 +303,7 @@ define(["modules/platform/platformModule"], function () {
               ((PresentLastServiceAlert.ServiceAlertStatus.Key == 857653252 &&
                 $scope.Satus != "Manual Close") ||
                 $scope.Satus == "Accepted") &&
-              (PresentLastServiceAlert.JeopardyState.Key == 334913536 ||
+              (PresentLastServiceAlert.JeopardyState.Key == 916520960 ||
                 PresentLastServiceAlert.JeopardyState.Key == 808681472)
             ) {
               let f1 = PresentLastServiceAlert.manualManageTime;
@@ -277,7 +333,7 @@ define(["modules/platform/platformModule"], function () {
               (((PresentLastServiceAlert.ServiceAlertStatus.Key == 857653252 &&
                 $scope.Satus != "Manual Close") ||
                 $scope.Satus == "Manual Close") &&
-                (LastServiceAlert.JeopardyState.Key == 334913536 ||
+                (LastServiceAlert.JeopardyState.Key == 916520960 ||
                   PresentLastServiceAlert.JeopardyState.Key == 808681472) &&
                 ($scope.LastServiceAlert.FollowUpAction["@DisplayString"] ==
                   "Llamar al proveedor" ||

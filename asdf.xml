@@ -1,0 +1,24 @@
+<?xml version='1.0'?>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+  <xsl:template match="@*|node()">
+    <SXPMultipleOperations Destination="SO" Revision="7.5.0">
+      <Operations>
+        <Operation>
+          <Action>Update</Action>
+          <Object>
+            <xsl:apply-templates select="Mission" />
+          </Object>
+        </Operation>
+      </Operations>
+    </SXPMultipleOperations>
+  </xsl:template>
+  <xsl:template match="Mission">
+    <Mission>
+      <Key>
+        <xsl:value-of select="Key" />
+      </Key>
+      <MissionType>Notification</MissionType>
+      <SMSText>Seguros Bolívar: Hola! En 1 minuto cuéntenos cómo fue su experiencia con el servicio de<xsl:value-of select="Task/TaskType/NameClean" />. Clic aquí https://survey.survicate.com/755051211ce43f78/?embebido=CC|<xsl:value-of select="Task/CedulaAsegurado" />|<xsl:value-of select="Task/CEMPhoneNumber" />|||<xsl:value-of select="Task/ProductoCodigo" />|1|<xsl:value-of select="Task/CallID" />|</SMSText>
+    </Mission>
+  </xsl:template>
+</xsl:stylesheet>

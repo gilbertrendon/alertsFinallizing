@@ -44,10 +44,10 @@
           <td role="gridcell" style="padding: 8px">{{alert.FollowUpUser}}</td>
           <td role="gridcell" style="padding: 8px">{{alert.FollowCloseUser}}</td>
           <td role="gridcell" style="padding: 8px">
-            {{alert.Acciones[LastServiceAlert.Acciones.length].DevolverAlertaaFront}}
-            {{alert.Acciones[LastServiceAlert.Acciones.length].LlamarCliente}}
-            {{alert.Acciones[LastServiceAlert.Acciones.length].LlamarProveedor}}
-            {{alert.Acciones[LastServiceAlert.Acciones.length].Serealizaelreporte}}
+            {{alert.FollowUpActions[0]["@DisplayString"]}} 
+            {{alert.FollowUpActions[1]["@DisplayString"]}} 
+            {{alert.FollowUpActions[2]["@DisplayString"]}} 
+            {{alert.FollowUpActions[3]["@DisplayString"]}}
           </td>
           <td role="gridcell" style="padding: 8px">{{alert.FollowUpComments}}</td>
         </tr>
@@ -123,5 +123,15 @@
         </tr>
       </tbody>
     </table>
+
+    <!-- insercion -->
+    <!-- <div class="progress-container">
+      <div class="progress" ng-style="{width: progressBarWidth}"></div>
+    </div>
+    
+    <button ng-click="startLoading()">Iniciar Carga</button>
+    
+    <p>Progreso: {{ progressBarWidth }}</p> -->
+    <!-- fin inserción -->
   </div>
 </div>

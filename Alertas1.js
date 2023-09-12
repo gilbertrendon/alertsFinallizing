@@ -9,7 +9,7 @@ define(["modules/platform/platformModule"], function () {
     "w6serverServices",
     "$window",
 
-    async function ($scope, w6serverServices, $window) {
+    async function ($scope, w6serverServices, $interval) {
       {
         $scope.colorete = false;
         $scope.actionColorete = false;
@@ -67,6 +67,26 @@ define(["modules/platform/platformModule"], function () {
 
       $scope.selectedValues = [];
       $scope.selected = [];
+
+      {
+        $scope.progressBarWidth = '0%';
+        let loadingInterval;
+    
+        $scope.startLoading = function () {
+          // Simula una carga ficticia
+          let progress = 0;
+          loadingInterval = $interval(function () {
+            progress += 2; // Aumenta el progreso en un 2% cada vez
+            if (progress <= 100) {
+              $scope.progressBarWidth = progress + '%';
+            } else {
+              $interval.cancel(loadingInterval);
+            }
+          }, 100); // Actualiza la barra de carga cada 100 ms
+        };
+      }
+      
+        
 
       $scope.clearDate = function (alerta) {
         //Para limpiar el arreglo de las alertas pasadas
@@ -143,25 +163,80 @@ define(["modules/platform/platformModule"], function () {
         await reqServiceAlerts.$promise.then(
           function (ServiceAlertData) {
             $scope.ServiceAlertKeys = ServiceAlertData;
-
             if ($scope.ServiceAlertKeys.length > 0) {
-              $scope.LastServiceAlert =
-                $scope.ServiceAlertKeys[$scope.ServiceAlertKeys.length - 1];
+              let positionLastAlert = 0;
+              let actionsAndCommentsPendingOrClosed= false;
+              for (let i = $scope.ServiceAlertKeys.length - 1; i >= 0; i--) {
+                if (
+                  $scope.ServiceAlertKeys[i].ServiceAlertStatus.Key == 857653251
+                ) {
+                  $scope.LastServiceAlert = $scope.ServiceAlertKeys[i];
+                  $scope.LastServiceAlert = $scope.clearDate(
+                    $scope.LastServiceAlert
+                  );
+                  $scope.PresentStatus = {
+                    Value: $scope.LastServiceAlert.ServiceAlertStatus.Key,
+                    Name: $scope.LastServiceAlert.ServiceAlertStatus[
+                      "@DisplayString"
+                    ],
+                  };
+                  PresentLastServiceAlert = $scope.LastServiceAlert;
+                  positionLastAlert = i;
+                  break; // Detener la búsqueda una vez que se haya encontrado el primer elemento "pending"
+                } else if (
+                  $scope.ServiceAlertKeys[i].ServiceAlertStatus.Key == 857653252
+                ) {
+                  $scope.LastServiceAlert = $scope.ServiceAlertKeys[i];
+                  $scope.ServiceAlertKeys.splice(i, 1);
+                  $scope.LastServiceAlert = $scope.clearDate(
+                    $scope.LastServiceAlert
+                  );
+                  $scope.PresentStatus = {
+                    Value: $scope.LastServiceAlert.ServiceAlertStatus.Key,
+                    Name: $scope.LastServiceAlert.ServiceAlertStatus[
+                      "@DisplayString"
+                    ],
+                  };
+                  PresentLastServiceAlert = $scope.LastServiceAlert;
+                  positionLastAlert = i;
+                  break; // Detener la búsqueda una vez que se haya encontrado el primer elemento "pending"
+                } else if (
+                  $scope.ServiceAlertKeys[i].ServiceAlertStatus.Key == 857653253 && !actionsAndCommentsPendingOrClosed
+                ) {
+                  $scope.LastServiceAlert = $scope.ServiceAlertKeys[i];
+                  $scope.LastServiceAlert = $scope.clearDate(
+                    $scope.LastServiceAlert
+                  );
+                  $scope.PresentStatus = {
+                    Value: $scope.LastServiceAlert.ServiceAlertStatus.Key,
+                    Name: $scope.LastServiceAlert.ServiceAlertStatus[
+                      "@DisplayString"
+                    ],
+                  };
+                  PresentLastServiceAlert = $scope.LastServiceAlert;
+                  positionLastAlert = i;
+                  actionsAndCommentsPendingOrClosed = true;
+                } else if (
+                  $scope.ServiceAlertKeys[i].ServiceAlertStatus.Key == 649388032 && !actionsAndCommentsPendingOrClosed
+                ) {
+                  $scope.LastServiceAlert = $scope.ServiceAlertKeys[i];
+                  $scope.LastServiceAlert = $scope.clearDate(
+                    $scope.LastServiceAlert
+                  );
 
-              $scope.LastServiceAlert = $scope.clearDate(
-                $scope.LastServiceAlert
-              );
-
-              $scope.PresentStatus = {
-                Value: $scope.LastServiceAlert.ServiceAlertStatus.Key,
-                Name: $scope.LastServiceAlert.ServiceAlertStatus[
-                  "@DisplayString"
-                ],
-              };
-
-              $scope.ServiceAlertKeys.pop();
-
-              PresentLastServiceAlert = $scope.LastServiceAlert;
+                  $scope.PresentStatus = {
+                    Value: $scope.LastServiceAlert.ServiceAlertStatus.Key,
+                    Name: $scope.LastServiceAlert.ServiceAlertStatus[
+                      "@DisplayString"
+                    ],
+                  };
+                  PresentLastServiceAlert = $scope.LastServiceAlert;
+                  positionLastAlert = i;
+                  actionsAndCommentsPendingOrClosed = true;
+                }
+              }
+              //se elimina la alerta que fue puesta para gestionar de la lista de alertas
+              $scope.ServiceAlertKeys.splice(positionLastAlert, 1);
             }
 
             $scope.selected = [];
