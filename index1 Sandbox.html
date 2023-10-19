@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<div ng-controller="ServiceAlertFormController">
+  <div ng-controller="ServiceAlertFormController" ng-init="init();">
+    <label style="font-weight: bold">NOVEDAD EN EL SERVICIO</label>
+  </div>
+  <div id="divLocationsCombo" ng-show="showLocationsCombo">
+    <label style="font-weight: bold">CALL ID - {{CallIDg}}</label>
+  </div>
+  <div>
+    <table class="table">
+      <thead role="grid" style="background-color: #bec3c7">
+        <tr role="row" class="gridHeaderMultipleSelection">
+          <th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;"><span>Estado</span></th>
+          <th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;">Fecha de creaci&oacute;n</th>
+          <th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;">Fecha de aceptaci&oacute;n</th>
+          <th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;">Fecha de cierre</th>
+          <th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;">Fecha de cierre manual</th>
+          <th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;">Tiempo no gestionada</th>
+          <th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;">Tiempo gestionada</th>
+          <th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;">Tiempo de gesti&oacute;n manual</th>
+          <th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;">Tiempo total</th>
+          <th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;">Tipo de alerta</th>
+          <th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;">Aceptada por:</th>
+          <th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;">Cerrada por:</th>
+          <th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;">Accion(es)</th>
+          <th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;">Comentarios</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          style="color: #0875bf hsl(204, 92%, 39%) rgb(8, 117, 191)"
+          ng-repeat="alert in ServiceAlertKeys"
+        >
+          <td role="gridcell" style="padding: 8px">{{alert.ServiceAlertStatus['@DisplayString']}}</td>
+          <td role="gridcell" style="padding: 8px">{{alert.CreationTime}}</td>
+          <td role="gridcell" style="padding: 8px">{{alert.managementDate}}</td>
+          <td role="gridcell" style="padding: 8px">{{alert.closeAlert}}</td>
+          <td role="gridcell" style="padding: 8px">{{alert.manualCloseAlert}}</td>
+          <td role="gridcell" style="padding: 8px" >{{alert.notManageTime}}</td>
+          <td role="gridcell" style="padding: 8px" >{{alert.manageTime}}</td>
+          <td role="gridcell" style="padding: 8px" >{{alert.manualManageTime}}</td>
+          <td role="gridcell" style="padding: 8px" >{{alert.totalTimeDuration}}</td>
+          <td role="gridcell" style="padding: 8px">{{alert.Title}}</td>
+          <td role="gridcell" style="padding: 8px">{{alert.FollowUpUser}}</td>
+          <td role="gridcell" style="padding: 8px">{{alert.FollowCloseUser}}</td>
+          <td role="gridcell" style="padding: 8px">
+            {{alert.FollowUpActions[0]["@DisplayString"]}} 
+            {{alert.FollowUpActions[1]["@DisplayString"]}} 
+            {{alert.FollowUpActions[2]["@DisplayString"]}} 
+            {{alert.FollowUpActions[3]["@DisplayString"]}}
+          </td>
+          <td role="gridcell" style="padding: 8px">{{alert.FollowUpComments}}</td>
+        </tr>
+        <tr style="color: #0875bf hsl(204, 92%, 39%) rgb(8, 117, 191)">
+          <td>
+            <select
+              ng-model="PresentStatus"
+              ng-options="opcion.Name for opcion in Opciones track by opcion.Value"
+            ></select>
+          </td>
+          <td ng-model="LastServiceAlert.Stamp.TimeCreated">
+            {{LastServiceAlert.CreationTime}}
+          </td>
+          <td ng-model="LastServiceAlert.managementDate">
+            {{LastServiceAlert.managementDate}}
+          </td>
+          <td ng-model="LastServiceAlert.closeAlert">
+            {{LastServiceAlert.closeAlert}}
+          </td>
+          <td ng-model="LastServiceAlert.manualCloseAlert">
+            {{LastServiceAlert.manualCloseAlert}}
+          </td>
+          <td ng-model="LastServiceAlert.notManageTime">
+            {{LastServiceAlert.notManageTime}}
+          </td>
+          <td ng-model="LastServiceAlert.notManageTime">
+            {{LastServiceAlert.manageTime}}
+          </td>
+          <td ng-model="LastServiceAlert.manualManageTime">
+            {{LastServiceAlert.manualManageTime}}
+          </td>
+          <td ng-model="LastServiceAlert.totalTime">
+            {{LastServiceAlert.totalTimeDuration}}
+          </td>
+          <td ng-model="LastServiceAlert.Title">{{LastServiceAlert.Title}}</td>
+          <td ng-model="LastServiceAlert.FollowUpUser">
+            {{LastServiceAlert.FollowUpUser}}
+          </td>
+          <td ng-model="LastServiceAlert.FollowUpUser">
+            {{LastServiceAlert.FollowCloseUser}}
+          </td>
+          <td>
+            Presione control para seleccionar varias acciones:
+            <br />
+
+            <select
+              ng-class="{'color': actionColorete}"
+              ng-change="changeActionsResalt()"
+              multiple
+              ng-model="selectedValues"
+            >
+              <option value="1">Devolver alerta a front</option>
+              <option value="2">Llamar cliente</option>
+              <option value="3">Llamar proveedor</option>
+              <option value="4">
+                Se realiza el reporte de las novedades del servicio
+              </option>
+            </select>
+          </td>
+          <td>
+            <textarea
+              ng-class="{'color': colorete}"
+              ng-change="changeResalt()"
+              id="coments"
+              rows="4"
+              cols="30"
+              name="comment"
+              ng-model="LastServiceAlert.FollowUpComments"
+            >
+            {{LastServiceAlert.FollowUpComments}}</textarea
+            >
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- insercion -->
+    <!-- <div class="progress-container">
+      <div class="progress" ng-style="{width: progressBarWidth}"></div>
+    </div>
+    
+    <button ng-click="startLoading()">Iniciar Carga</button>
+    
+    <p>Progreso: {{ progressBarWidth }}</p> -->
+    <!-- fin inserción -->
+  </div>
+</div>
