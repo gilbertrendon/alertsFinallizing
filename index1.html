@@ -10,20 +10,104 @@
     <table class="table">
       <thead role="grid" style="background-color: #bec3c7">
         <tr role="row" class="gridHeaderMultipleSelection">
-          <th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;"><span>Estado</span></th>
-          <th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;">Fecha de creaci&oacute;n</th>
-          <th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;">Fecha de aceptaci&oacute;n</th>
-          <th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;">Fecha de cierre</th>
-          <th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;">Fecha de cierre manual</th>
-          <th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;">Tiempo no gestionada</th>
-          <th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;">Tiempo gestionada</th>
-          <th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;">Tiempo de gesti&oacute;n manual</th>
-          <th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;">Tiempo total</th>
-          <th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;">Tipo de alerta</th>
-          <th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;">Aceptada por:</th>
-          <th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;">Cerrada por:</th>
-          <th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;">Accion(es)</th>
-          <th role="columnheader" class="k-header columnNombre" style="border-left: 1px solid #1174be;">Comentarios</th>
+          <th
+            role="columnheader"
+            class="k-header columnNombre"
+            style="border-left: 1px solid #1174be"
+          >
+            <span>Estado</span>
+          </th>
+          <th
+            role="columnheader"
+            class="k-header columnNombre"
+            style="border-left: 1px solid #1174be"
+          >
+            Fecha de creaci&oacute;n
+          </th>
+          <th
+            role="columnheader"
+            class="k-header columnNombre"
+            style="border-left: 1px solid #1174be"
+          >
+            Fecha de aceptaci&oacute;n
+          </th>
+          <th
+            role="columnheader"
+            class="k-header columnNombre"
+            style="border-left: 1px solid #1174be"
+          >
+            Fecha de cierre
+          </th>
+          <th
+            role="columnheader"
+            class="k-header columnNombre"
+            style="border-left: 1px solid #1174be"
+          >
+            Fecha de cierre manual
+          </th>
+          <th
+            role="columnheader"
+            class="k-header columnNombre"
+            style="border-left: 1px solid #1174be"
+          >
+            Tiempo no gestionada
+          </th>
+          <th
+            role="columnheader"
+            class="k-header columnNombre"
+            style="border-left: 1px solid #1174be"
+          >
+            Tiempo gestionada
+          </th>
+          <th
+            role="columnheader"
+            class="k-header columnNombre"
+            style="border-left: 1px solid #1174be"
+          >
+            Tiempo de gesti&oacute;n manual
+          </th>
+          <th
+            role="columnheader"
+            class="k-header columnNombre"
+            style="border-left: 1px solid #1174be"
+          >
+            Tiempo total
+          </th>
+          <th
+            role="columnheader"
+            class="k-header columnNombre"
+            style="border-left: 1px solid #1174be"
+          >
+            Tipo de alerta
+          </th>
+          <th
+            role="columnheader"
+            class="k-header columnNombre"
+            style="border-left: 1px solid #1174be"
+          >
+            Aceptada por:
+          </th>
+          <th
+            role="columnheader"
+            class="k-header columnNombre"
+            style="border-left: 1px solid #1174be"
+          >
+            Cerrada por:
+          </th>
+          <th
+            role="columnheader"
+            class="k-header columnNombre"
+            style="border-left: 1px solid #1174be"
+          >
+            Accion(es)
+          </th>
+          <th
+            role="columnheader"
+            class="k-header columnNombre"
+            style="border-left: 1px solid #1174be"
+          >
+            Comentarios
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -31,29 +115,42 @@
           style="color: #0875bf hsl(204, 92%, 39%) rgb(8, 117, 191)"
           ng-repeat="alert in ServiceAlertKeys"
         >
-          <td role="gridcell" style="padding: 8px">{{alert.ServiceAlertStatus['@DisplayString']}}</td>
+          <td role="gridcell" style="padding: 8px">
+            {{alert.ServiceAlertStatus['@DisplayString']}}
+          </td>
           <td role="gridcell" style="padding: 8px">{{alert.CreationTime}}</td>
           <td role="gridcell" style="padding: 8px">{{alert.managementDate}}</td>
           <td role="gridcell" style="padding: 8px">{{alert.closeAlert}}</td>
-          <td role="gridcell" style="padding: 8px">{{alert.manualCloseAlert}}</td>
-          <td role="gridcell" style="padding: 8px" >{{alert.notManageTime}}</td>
-          <td role="gridcell" style="padding: 8px" >{{alert.manageTime}}</td>
-          <td role="gridcell" style="padding: 8px" >{{alert.manualManageTime}}</td>
-          <td role="gridcell" style="padding: 8px" >{{alert.totalTimeDuration}}</td>
+          <td role="gridcell" style="padding: 8px">
+            {{alert.manualCloseAlert}}
+          </td>
+          <td role="gridcell" style="padding: 8px">{{alert.notManageTime}}</td>
+          <td role="gridcell" style="padding: 8px">{{alert.manageTime}}</td>
+          <td role="gridcell" style="padding: 8px">
+            {{alert.manualManageTime}}
+          </td>
+          <td role="gridcell" style="padding: 8px">
+            {{alert.totalTimeDuration}}
+          </td>
           <td role="gridcell" style="padding: 8px">{{alert.Title}}</td>
           <td role="gridcell" style="padding: 8px">{{alert.FollowUpUser}}</td>
-          <td role="gridcell" style="padding: 8px">{{alert.FollowCloseUser}}</td>
           <td role="gridcell" style="padding: 8px">
-            {{alert.FollowUpActions[0]["@DisplayString"]}} 
-            {{alert.FollowUpActions[1]["@DisplayString"]}} 
-            {{alert.FollowUpActions[2]["@DisplayString"]}} 
+            {{alert.FollowCloseUser}}
+          </td>
+          <td role="gridcell" style="padding: 8px">
+            {{alert.FollowUpActions[0]["@DisplayString"]}}
+            {{alert.FollowUpActions[1]["@DisplayString"]}}
+            {{alert.FollowUpActions[2]["@DisplayString"]}}
             {{alert.FollowUpActions[3]["@DisplayString"]}}
           </td>
-          <td role="gridcell" style="padding: 8px">{{alert.FollowUpComments}}</td>
+          <td role="gridcell" style="padding: 8px">
+            {{alert.FollowUpComments}}
+          </td>
         </tr>
         <tr style="color: #0875bf hsl(204, 92%, 39%) rgb(8, 117, 191)">
           <td>
             <select
+              ng-disabled="textoDeshabilitado"
               ng-model="PresentStatus"
               ng-options="opcion.Name for opcion in Opciones track by opcion.Value"
             ></select>
@@ -94,6 +191,7 @@
             <br />
 
             <select
+              ng-disabled="textoDeshabilitado"
               ng-class="{'color': actionColorete}"
               ng-change="changeActionsResalt()"
               multiple
@@ -109,6 +207,7 @@
           </td>
           <td>
             <textarea
+              ng-disabled="textoDeshabilitado"
               ng-class="{'color': colorete}"
               ng-change="changeResalt()"
               id="coments"
@@ -123,15 +222,14 @@
         </tr>
       </tbody>
     </table>
-
     <!-- insercion -->
-    <!-- <div class="progress-container">
-      <div class="progress" ng-style="{width: progressBarWidth}"></div>
+    <div class="progress-container" ng-show="textoDeshabilitado">
+      <p>Actualizando ... {{ progressBarWidth }}</p>
+      <!-- <div class="progress" ng-style="{width: progressBarWidth}"></div> -->
     </div>
-    
-    <button ng-click="startLoading()">Iniciar Carga</button>
-    
-    <p>Progreso: {{ progressBarWidth }}</p> -->
+
+    <!-- <button ng-click="startLoading()">Iniciar Carga</button> -->
+
     <!-- fin inserción -->
   </div>
 </div>
